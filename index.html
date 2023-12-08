@@ -29,7 +29,7 @@
       aria-labelledby="modalTitleId"
       aria-hidden="true"
     >
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-body">
             <div class="d-flex flex-column">
@@ -44,20 +44,48 @@
                     ></button>
                   </div>
                 </div>
-                <div class="row mt-3">
-                  <div class="col d-flex justify-content-end">
-                    <div class="col-auto mx-1">
+
+                <div class="row justify-content-center p-1">
+                  <div class="col-10">
+                    <h3 class="text-center">Login</h3>
+                  </div>
+                </div>
+
+                <div class="row justify-content-center py-4">
+                  <div class="row col-10 mb-2">
+                    <input
+                      type="email"
+                      class="form-control shadow-none rounded-3"
+                      name="logEmail"
+                      id="logEmail"
+                      placeholder="Email"
+                    />
+                  </div>
+                  <div class="row col-10 my-2">
+                    <input
+                      type="password"
+                      class="form-control shadow-none rounded-3"
+                      name="logPass"
+                      id="logPass"
+                      placeholder="Password"
+                    />
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col d-flex justify-content-center">
+                    <div class="col-4 mx-1">
                       <button
                         type="button"
-                        class="btn btn-danger"
+                        class="col-12 btn btn-danger"
                         data-bs-dismiss="modal"
                       >
                         Close
                       </button>
                     </div>
-                    <div class="col-auto mx-1">
-                      <button type="button" class="btn btn-primary">
-                        Save
+                    <div class="col-4 mx-1">
+                      <button type="button" class="col-12 btn btn-primary">
+                        Login
                       </button>
                     </div>
                   </div>
@@ -78,29 +106,96 @@
       aria-labelledby="modalTitleId"
       aria-hidden="true"
     >
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalTitleId">Modal title</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
           <div class="modal-body">
-            <div class="container-fluid">Add rows here</div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="button" class="btn btn-primary">Save</button>
+            <div class="d-flex flex-column">
+              <form id="loginForm">
+                <div class="row justify-content-end">
+                  <div class="col-12 text-end">
+                    <button
+                      type="button"
+                      class="btn-close shadow-none"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                </div>
+
+                <div class="row justify-content-center p-1">
+                  <div class="col-10">
+                    <h3 class="text-center">Register</h3>
+                  </div>
+                </div>
+
+                <div class="row justify-content-center py-4">
+                  <div class="row col-10 mb-2">
+                    <input
+                      type="text"
+                      class="form-control shadow-none rounded-3"
+                      name="regName"
+                      id="regName"
+                      placeholder="Name"
+                    />
+                  </div>
+                  <div class="row col-10 my-2">
+                    <input
+                      type="email"
+                      class="form-control shadow-none rounded-3"
+                      name="regEmail"
+                      id="regEmail"
+                      placeholder="Email"
+                    />
+                  </div>
+                  <div class="row col-10 my-2">
+                    <input
+                      type="password"
+                      class="form-control shadow-none rounded-3"
+                      name="regPass1"
+                      id="regPass1"
+                      placeholder="Enter Password"
+                    />
+                  </div>
+                  <div class="row col-10 my-2">
+                    <input
+                      type="password"
+                      class="form-control shadow-none rounded-3"
+                      name="regPass2"
+                      id="regPass2"
+                      placeholder="Confirm Password"
+                    />
+                  </div>
+                  <div class="row col-10 my-2">
+                    <input
+                      type="text"
+                      class="form-control shadow-none rounded-3"
+                      name="referal"
+                      id="referal"
+                      placeholder="Referal Code"
+                    />
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col d-flex justify-content-center">
+                    <div class="col-4 mx-1">
+                      <button
+                        type="button"
+                        class="col-12 btn btn-danger"
+                        data-bs-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                    </div>
+                    <div class="col-4 mx-1">
+                      <button type="button" class="col-12 btn btn-primary">
+                        Register
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -108,7 +203,7 @@
 
     <header>
       <div class="container">
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark px-3">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark px-2">
           <a class="navbar-brand" href="#">Navbar</a>
           <button
             class="navbar-toggler d-lg-none"
@@ -146,7 +241,7 @@
                     data-bs-toggle="modal"
                     data-bs-target="#registerModal"
                   >
-                    Signup
+                    Register
                   </button>
                 </div>
               </div>
