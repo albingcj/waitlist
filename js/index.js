@@ -116,9 +116,9 @@ $(document).ready(function () {
 
     // Function to create a single accordion item
     function createAccordionItem(item) {
-        var accordionItem = $('<div class="accordion-item"></div>');
+        var accordionItem = $('<div class="accordion-item "></div>');
         var accordionHeader = $('<h2 class="accordion-header"></h2>');
-        var accordionButton = $('<button class="accordion-button"></button>');
+        var accordionButton = $('<button class="accordion-button shadow-none "></button>');
 
         // Set attributes for the accordion button
         accordionButton.attr({
@@ -224,8 +224,8 @@ $(document).ready(function () {
     }
 
     function refreshDivs() {
-        $('#headerId').load(' #headerId');
-        $('#mainId').load(' #mainId');
+        $('#headerId').load(window.location.href + ' #headerId');
+        $('#mainId').load(window.location.href + ' #mainId');
     
     }
 
@@ -257,6 +257,9 @@ $(document).ready(function () {
                         showCloseButton: true,
                         text: res.message,
                     });
+                    $("#loginModal").modal("hide");
+                    fetchData();
+                    loggedIn();
                 } else {
                     Swal.fire({
                         icon: "error",
@@ -310,6 +313,8 @@ $(document).ready(function () {
                         showCloseButton: true,
                         text: res.message,
                     });
+                    $("#registerModal").modal("hide");
+
                 } else {
                     Swal.fire({
                         icon: "error",
@@ -341,6 +346,9 @@ $(document).ready(function () {
                         showCloseButton: true,
                         text: res.message,
                     });
+                    $('#perDet').empty();
+
+                    loggedIn();
                 } else {
                     Swal.fire({
                         icon: "error",
