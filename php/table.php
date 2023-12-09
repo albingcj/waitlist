@@ -2,7 +2,9 @@
 include_once 'conn.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $query = "SELECT * FROM accordion";
+    $id = $_GET['id'];
+    $tableName = 'table' . $id;
+    $query = "SELECT * FROM $tableName WHERE flag = 0 ORDER BY count DESC";
     $query_run = mysqli_query($db, $query);
 
     if ($query_run) {
@@ -10,26 +12,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         while ($row = mysqli_fetch_assoc($query_run)) {
             $data[] = array(
-                'id' => $row['id'],
                 'name' => $row['name'],
-                'subhead' => $row['subhead'],
-                'type' => $row['type'],
-                'content' => $row['content'],
-                'image' => 'https://www.placeholder.com/400',
+                'count' => $row['count'],
                 // 'image' => $row['image'],
             );
         }
     } else {
         $data[] = array(
-            'id' => '',
             'name' => '',
-            'subhead' => '',
-            'type' => '',
-            'content' => '',
-            'image' => '',
+            'count' => '',
         );
     }
 
     echo json_encode($data);
 }
-?>

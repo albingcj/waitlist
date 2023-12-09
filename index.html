@@ -20,7 +20,7 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
-
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
 
   <body>
@@ -88,7 +88,7 @@
                       </button>
                     </div>
                     <div class="col-4 mx-1">
-                      <button type="button" class="col-12 btn btn-light">
+                      <button type="submit" class="col-12 btn btn-light">
                         Login
                       </button>
                     </div>
@@ -183,7 +183,7 @@
                       </button>
                     </div>
                     <div class="col-4 mx-1">
-                      <button type="button" class="col-12 btn btn-primary">
+                      <button type="submit" class="col-12 btn btn-primary">
                         Register
                       </button>
                     </div>
@@ -283,9 +283,9 @@
       </div>
     </div>
 
-    <header>
+    <header id="headerId">
       <div class="container">
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark px-2">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark p-3">
           <a class="navbar-brand" href="#">Navbar</a>
           <button
             class="navbar-toggler d-lg-none"
@@ -303,28 +303,41 @@
             id="collapsibleNavId"
           >
             <div class="d-flex justify-content-center">
-              <div class="row">
-                <div class="col m-2">
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#loginModal"
-                  >
-                    Login
-                  </button>
+              <div class="col d-flex justify-content-center" id="lrBtns">
+                <div class="row">
+                  <div class="col m-2">
+                    <button
+                    id="loginBtn"
+                      type="button"
+                      class="btn btn-primary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#loginModal"
+                    >
+                      Login
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col m-2">
+                    <button
+                    id="registerBtn"
+                      type="button"
+                      class="btn btn-primary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#registerModal"
+                    >
+                      Register
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col m-2">
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#registerModal"
-                  >
-                    Register
-                  </button>
+              <div class="col d-flex justify-content-center" id="loutBtn">
+                <div class="row">
+                  <div class="col m-2">
+                    <button type="button" 
+                    id="logoutBtn"
+                    class="btn btn-danger">Logout</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -332,11 +345,10 @@
         </nav>
       </div>
     </header>
-    <main>
+    <main id="mainId">
       <div class="container">
         <div class="row">
-          <div class="col">
-            <h1>Trending waitlists</h1>
+          <div class="col" id="perDet">
           </div>
         </div>
 
@@ -507,19 +519,12 @@
               </div>
             </div>
           </div>
-
-
-
-
-
         </div>
       </div>
     </main>
     <footer></footer>
 
-
     <script src="js/index.js"></script>
-
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
       integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

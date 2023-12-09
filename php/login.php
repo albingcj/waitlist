@@ -1,14 +1,31 @@
 <?php
-include_once('db.php');
-include_once('session.php');
+include_once('conn.php');
 session_start();
+
+
+function checkExist($email)
+{
+    global $db;
+    $query = "SELECT * FROM users WHERE email = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('s', $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+
+    if ($user) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 
 function validateCredentials($email, $password)
 {
-    global $mysqli;
-    $query = "SELECT * FROM register WHERE email = ?";
-    $stmt = $mysqli->prepare($query);
+    global $db;
+    $query = "SELECT * FROM users WHERE email = ?";
+    $stmt = $db->prepare($query);
     $stmt->bind_param('s', $email);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -16,7 +33,8 @@ function validateCredentials($email, $password)
 
     if ($user) {
         if (password_verify($password, $user['password'])) {
-            $_SESSION['user_email'] = $user['email'];
+            $_SESSION['email'] = $user['email'];
+            $_SESSION['name'] = $user['name'];
             return true;
         }
     }
@@ -27,19 +45,28 @@ function validateCredentials($email, $password)
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $userEmail = $_POST['userEmail'];
-    $userPwd = $_POST['userPwd'];
+    $userEmail = $_POST['logEmail'];
+    $userPwd = $_POST['logPass'];
 
 
+    //checks if the user exists in the database
+    //if not return error
+    if(checkExist($userEmail) == false){
+        $res = [
+            'status' => 400,
+            'message' => "Email does not exist",
+        ];
+        echo json_encode($res);
+        return;
+    }
     
+    // Else continue operations
     $validCredentials = validateCredentials($userEmail, $userPwd);
 
     if ($validCredentials) {
         $res = [
             'status' => 200,
             'message' => "Login successful",
-            // 'email' => $userEmail,
-            // 'password' => $userPwd
         ];
         echo json_encode($res);
         return;
