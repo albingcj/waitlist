@@ -192,6 +192,8 @@ $(document).ready(function () {
             },
         });
     }
+
+
     function loggedIn() {
         $.ajax({
             type: "GET",
@@ -200,8 +202,6 @@ $(document).ready(function () {
             success: function (res) {
                 if (res.status === 200) {
                     console.log("logged in");
-                    // $("#lrBtns").hide();
-                    // $("#loutBtn").show();
                     // add d-none class to lrbtns div
                     $("#lrBtns").addClass("d-none")
                     $("#loutBtn").removeClass("d-none")
@@ -226,14 +226,13 @@ $(document).ready(function () {
     function refreshDivs() {
         $('#headerId').load(window.location.href + ' #headerId');
         $('#mainId').load(window.location.href + ' #mainId');
-    
+
     }
 
     // Fetch data on document ready
     fetchData();
-    loggedIn();
     // already logged in ?
-
+    loggedIn();
 
 
     // login form
