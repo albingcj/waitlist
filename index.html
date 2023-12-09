@@ -88,7 +88,7 @@
                       </button>
                     </div>
                     <div class="col-4 mx-1">
-                      <button type="submit" class="col-12 btn btn-light">
+                      <button type="submit" class="col-12 btn btn-primary">
                         Login
                       </button>
                     </div>
@@ -305,7 +305,7 @@
             <div class="d-flex justify-content-center">
               <div class="col d-flex justify-content-center" id="lrBtns">
                 <div class="row">
-                  <div class="col m-2">
+                  <div class="col mx-2">
                     <button
                     id="loginBtn"
                       type="button"
@@ -318,7 +318,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col m-2">
+                  <div class="col mx-2">
                     <button
                     id="registerBtn"
                       type="button"
@@ -333,7 +333,7 @@
               </div>
               <div class="col d-flex justify-content-center" id="loutBtn">
                 <div class="row">
-                  <div class="col m-2">
+                  <div class="col mx-2">
                     <button type="button" 
                     id="logoutBtn"
                     class="btn btn-danger">Logout</button>
@@ -348,182 +348,16 @@
     <main id="mainId">
       <div class="container">
         <div class="row">
-          <div class="col" id="perDet">
-            <h2>
+          <div class="col p-3">
+            <h2 id="perDet">
               Hi there!
             </h2>
-            <p>Active Waitlists</p>
             <p>Log in to join the queue</p>
+            <h2 class="fw-bold">Active Waitlists</h2>
           </div>
         </div>
 
         <div class="accordion rounded-0" id="accordionWait">
-          <div class="accordion-item 1">
-            <h2 class="accordion-header">
-              <button
-                class="accordion-button"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseOne"
-                aria-expanded="true"
-                aria-controls="collapseOne"
-              >
-                <div class="d-flex align-items-center">
-                  <div class="col d-flex align-items-center">
-                    <!-- Image -->
-                    <img
-                      src="https://www.placeholder.com/400"
-                      alt="Image Alt Text"
-                      class="me-2 img-fluid"
-                      height="100"
-                      width="100"
-                    />
-
-                    <!-- Text Content -->
-                    <div>
-                      <h5 class="mb-0">iphone 14 Pro</h5>
-                      <p class="mb-0">Join waitlist for iphone 14 Pro</p>
-
-                      <div
-                        type="button"
-                        class="btn btn-primary mt-3 rounded-0 regBtn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#waitRegModal"
-                        data-type="iphone14Pro"
-                      >
-                        Register
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </button>
-            </h2>
-            <div
-              id="collapseOne"
-              class="accordion-collapse collapse show"
-              data-bs-parent="#accordionWait"
-            >
-              <div class="accordion-body">
-                <strong>This is the first item's accordion body.</strong> It is
-                shown by default, until the collapse plugin adds the appropriate
-                classes that we use to style each element. These classes control
-                the overall appearance, as well as the showing and hiding via
-                CSS transitions. You can modify any of this with custom CSS or
-                overriding our default variables. It's also worth noting that
-                just about any HTML can go within the
-                <code>.accordion-body</code>, though the transition does limit
-                overflow.
-                <div class="table-responsive">
-                  <table
-                    class="table table-hover table-borderless text-center border"
-                  >
-                    <caption class="text-center">
-                      last refreshed at 10:10:00PM
-                    </caption>
-                    <thead class="table-dark">
-                      <tr class="table-danger">
-                        <th>Rank</th>
-                        <th>Name</th>
-                        <th>points</th>
-                      </tr>
-                    </thead>
-                    <tbody class="table-group-divider">
-                      <tr class="">
-                        <td scope="row">1</td>
-                        <td>Item</td>
-                        <td>Item</td>
-                      </tr>
-                      <tr class="">
-                        <td scope="row">2</td>
-                        <td>Item</td>
-                        <td>Item</td>
-                      </tr>
-                      <tr class="">
-                        <td scope="row">3</td>
-                        <td>Item</td>
-                        <td>Item</td>
-                      </tr>
-                      <tr class="">
-                        <td scope="row">4</td>
-                        <td>Item</td>
-                        <td>Item</td>
-                      </tr>
-                      <tr class="">
-                        <td scope="row">5</td>
-                        <td>Item</td>
-                        <td>Item</td>
-                      </tr>
-                    </tbody>
-                    <tfoot>
-                      <tr class="table-primary">
-                        <td scope="row">99</td>
-                        <td>You</td>
-                        <td>10</td>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="accordion-item 2">
-            <h2 class="accordion-header">
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseTwo"
-                aria-expanded="false"
-                aria-controls="collapseTwo"
-              >
-                <div class="d-flex align-items-center">
-                  <div class="col d-flex align-items-center">
-                    <!-- Image -->
-                    <img
-                      src="https://www.placeholder.com/300"
-                      alt="Image Alt Text"
-                      class="me-2 img-fluid"
-                      height="100"
-                      width="100"
-                    />
-
-                    <!-- Text Content -->
-                    <div>
-                      <h5 class="mb-0">iphone 14 Mini</h5>
-                      <p class="mb-0">Join waitlist for iphone 14 Mini</p>
-
-                      <div
-                        type="button"
-                        class="btn btn-primary mt-3 rounded-0 regBtn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#waitRegModal"
-                        data-type="iphone14Mini"
-                      >
-                        Register
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </button>
-            </h2>
-            <div
-              id="collapseTwo"
-              class="accordion-collapse collapse"
-              data-bs-parent="#accordionWait"
-            >
-              <div class="accordion-body">
-                <strong>This is the second item's accordion body.</strong> It is
-                hidden by default, until the collapse plugin adds the
-                appropriate classes that we use to style each element. These
-                classes control the overall appearance, as well as the showing
-                and hiding via CSS transitions. You can modify any of this with
-                custom CSS or overriding our default variables. It's also worth
-                noting that just about any HTML can go within the
-                <code>.accordion-body</code>, though the transition does limit
-                overflow.
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </main>

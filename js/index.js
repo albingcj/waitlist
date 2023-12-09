@@ -16,7 +16,7 @@ $(document).ready(function () {
             '<p class="mb-0">' +
             item.subhead +
             "</p>" +
-            '<div type="button" class="btn btn-primary mt-3 rounded-0 regBtn" data-bs-toggle="modal" data-bs-target="#waitRegModal" data-type="' +
+            '<div type="button" class="btn btn-primary mt-3 rounded-0 regBtn" data-type="' +
             item.type +
             '">Register</div>' +
             "</div>" +
@@ -173,8 +173,21 @@ $(document).ready(function () {
             // Set the value of the modal input field
             $("#waitType").val(waitType);
 
+            loggedIn(function (result) {
+                console.log(result);
+                if (result == true) {
+                    $("#waitRegModal").modal("show");
+                } else {
+                    Swal.fire({
+                        icon: "info",
+                        title: "Oops...",
+                        showCloseButton: true,
+                        text: "Please login to register!",
+                    });
+                }
+            });
             // Open the modal if it's not open already
-            $("#regModal").modal("show");
+            // $("#regModal").modal("show");
         });
     }
     // Function to fetch data from PHP script
@@ -194,7 +207,7 @@ $(document).ready(function () {
     }
 
 
-    function loggedIn() {
+    function loggedIn(callback) {
         $.ajax({
             type: "GET",
             url: "php/session.php",
@@ -205,34 +218,39 @@ $(document).ready(function () {
                     // add d-none class to lrbtns div
                     $("#lrBtns").addClass("d-none")
                     $("#loutBtn").removeClass("d-none")
-
+                    var x = res.name.split(" ");
+                    var y = x[0];
                     $("#perDet").html(
-                        `<p class="text-center">Welcome ${res.email}</p>` +
-                        `<p class="text-center">${res.name}</p>`
-                    )
-
+                        // `<p class="text-center">Welcome ${res.email}</p>` +
+                        // `<p class="text-center">${res.name}</p>`
+                        `<h1>Hi ${y}</h1>` 
+                    );
+                    callback(true);
                 } else {
                     console.log("not logged in");
                     $("#loutBtn").addClass("d-none")
                     $("#lrBtns").removeClass("d-none")
+                    callback(false);
                 }
             },
             error: function (xhr, status, error) {
                 console.error("Error checking login:", error);
+                callback(false);
             },
         });
     }
 
-    function refreshDivs() {
-        $('#headerId').load(window.location.href + ' #headerId');
-        $('#mainId').load(window.location.href + ' #mainId');
 
-    }
+
+
+
 
     // Fetch data on document ready
     fetchData();
     // already logged in ?
-    loggedIn();
+    loggedIn(function (isLoggedIn) {
+        // console.log(isLoggedIn);
+    });
 
 
     // login form
@@ -258,7 +276,9 @@ $(document).ready(function () {
                     });
                     $("#loginModal").modal("hide");
                     fetchData();
-                    loggedIn();
+                    loggedIn(function (isLoggedIn) {
+                        // console.log(isLoggedIn);
+                    });
                 } else {
                     Swal.fire({
                         icon: "error",
@@ -345,9 +365,12 @@ $(document).ready(function () {
                         showCloseButton: true,
                         text: res.message,
                     });
-                    $('#perDet').empty();
+                    $('#perDet').load(' #perDet');
 
-                    loggedIn();
+                    loggedIn(function (isLoggedIn) {
+                        // console.log(isLoggedIn);
+                    });
+
                 } else {
                     Swal.fire({
                         icon: "error",
