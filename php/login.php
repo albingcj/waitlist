@@ -67,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $res = [
             'status' => 200,
             'message' => "Login successful",
+            'email' => $userEmail,
         ];
         echo json_encode($res);
         return;

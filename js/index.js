@@ -169,10 +169,11 @@ $(document).ready(function () {
             var waitType = clickedButton.data("type");
 
             console.log("waitType: " + waitType);
+            console.log("waitMail: " + localStorage.getItem("email")) ;
 
             // Set the value of the modal input field
             $("#waitType").val(waitType);
-
+            $("#waitEmail").val(localStorage.getItem("email"));
             loggedIn(function (result) {
                 console.log(result);
                 if (result == true) {
@@ -268,6 +269,8 @@ $(document).ready(function () {
             success: function (res) {
                 res = JSON.parse(res);
                 if (res.status === 200) {
+                    console.log("Login successful with email:", res.email);
+                    localStorage.setItem("email", res.email);
                     Swal.fire({
                         icon: "success",
                         title: "Success",
@@ -359,6 +362,7 @@ $(document).ready(function () {
             dataType: "json",
             success: function (res) {
                 if (res.status === 200) {
+                    localStorage.removeItem("email");
                     Swal.fire({
                         icon: "success",
                         title: "Success",
