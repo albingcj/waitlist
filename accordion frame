@@ -1,0 +1,80 @@
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button
+      class="accordion-button"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#collapse{id}"
+      aria-expanded="true"
+      aria-controls="collapse{id}"
+    >
+      <div class="d-flex align-items-center">
+        <div class="col d-flex align-items-center">
+          <!-- Image -->
+          <img
+            src="{image path}"
+            alt="{item name}"
+            class="me-2 img-fluid"
+            height="100"
+            width="100"
+          />
+
+          <!-- Text Content -->
+          <div>
+            <h5 class="mb-0">{item name}</h5>
+            <p class="mb-0">{item caption}</p>
+
+            <div
+              type="button"
+              class="btn btn-primary mt-3 rounded-0 regBtn"
+              data-bs-toggle="modal"
+              data-bs-target="#waitRegModal"
+              data-type="{item type}"
+            >
+              Register
+            </div>
+          </div>
+        </div>
+      </div>
+    </button>
+  </h2>
+  <div
+    id="collapse{id}"
+    class="accordion-collapse collapse show"
+    data-bs-parent="#accordionWait"
+  >
+    <div class="accordion-body">
+      <div class="row" id="bodyContent">
+        {description}
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover table-borderless text-center border">
+          <caption class="text-center">
+            {last updated}
+          </caption>
+          <thead class="table-dark">
+            <tr class="table-danger">
+              <th>Rank</th>
+              <th>Name</th>
+              <th>points</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider" id="tableBody{id}">
+            <tr class="">
+              <td scope="row">rank</td>
+              <td>{name}</td>
+              <td>{count}</td>
+            </tr> 
+          </tbody>
+          <tfoot>
+            <tr class="table-primary" id="tableFooter{id}">
+              <td scope="row">99</td>
+              <td>You</td>
+              <td>10</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
