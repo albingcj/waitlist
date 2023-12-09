@@ -35,6 +35,7 @@ function validateCredentials($email, $password)
         if (password_verify($password, $user['password'])) {
             $_SESSION['email'] = $user['email'];
             $_SESSION['name'] = $user['name'];
+            $_SESSION['userid'] = $user['id'];
             return true;
         }
     }

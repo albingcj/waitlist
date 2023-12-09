@@ -18,6 +18,8 @@ $(document).ready(function () {
             "</p>" +
             '<div type="button" class="btn btn-primary mt-3 rounded-0 regBtn" data-type="' +
             item.type +
+            '"data-tableid="' +
+            item.id +
             '">Register</div>' +
             "</div>" +
             "</div>" +
@@ -168,12 +170,19 @@ $(document).ready(function () {
             // Retrieve the waitType from the clicked button
             var waitType = clickedButton.data("type");
 
-            console.log("waitType: " + waitType);
-            console.log("waitMail: " + localStorage.getItem("email")) ;
+            // console.log("waitType: " + waitType);
+            // console.log("waitMail: " + localStorage.getItem("email")) ;
+
+            // console.log($(this).data("tableid"));
+            var tableid = $(this).data("tableid");
+            $("#regForm").attr("data-tableid", tableid);
+
+
+
 
             // Set the value of the modal input field
             $("#waitType").val(waitType);
-            $("#waitEmail").val(localStorage.getItem("email"));
+            // $("#waitname").val(localStorage.getItem("email"));
             loggedIn(function (result) {
                 console.log(result);
                 if (result == true) {
@@ -221,10 +230,15 @@ $(document).ready(function () {
                     $("#loutBtn").removeClass("d-none")
                     var x = res.name.split(" ");
                     var y = x[0];
+                    $('#waitname').val(y);
+
+                    $("#regForm").attr("data-userid", res.userid);
+
+
                     $("#perDet").html(
                         // `<p class="text-center">Welcome ${res.email}</p>` +
                         // `<p class="text-center">${res.name}</p>`
-                        `<h1>Hi ${y}</h1>` 
+                        `<h1>Hi ${y}</h1>`
                     );
                     callback(true);
                 } else {
@@ -390,4 +404,57 @@ $(document).ready(function () {
         });
     });
 
+
+    $("#regForm").submit(function (event) {
+        event.preventDefault();
+        // console.log($(this).data("tableid"));
+
+
+        formData = $(this).serialize();
+        var tableid = $(this).data("tableid");
+        var waitname = $('#waitname').val();
+        var waitType = $('#waitType').val();
+        var userid = $(this).data("userid");
+
+
+        formData += "&tableid=" + tableid;
+        formData += "&waitname=" + waitname;
+        formData += "&waitType=" + waitType;
+        formData += "&userid=" + userid;
+
+
+        console.log(formData);
+        console.log(tableid);
+
+        $.ajax({
+            type: "POST",
+            url: "php/regWaitlist.php",
+            data: formData,
+            dataType: "json",
+            success: function (res) {
+                if (res.status === 200) {
+                    console.log("Registration successful with email:", res.email);
+                    Swal.fire({
+                        icon: "success",
+                        title: "Success",
+                        showCloseButton: true,
+                        text: res.message,
+                    });
+                    $("#waitRegModal").modal("hide");
+                    addTable(tableid);
+                    fetchData();
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        showCloseButton: true,
+                        text: res.message,
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error registering:", error);
+            },
+        });
+    });
 });

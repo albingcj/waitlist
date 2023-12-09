@@ -4,11 +4,13 @@ session_start();
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     $name = $_SESSION['name'];
+    $userid = $_SESSION['userid'];
     $res = [
         'status' => 200,
         'message' => "Session set",
         'email' => $email,
-        'name'  => $name
+        'name'  => $name,
+        'userid' => $userid
     ];
 } else {
     $res = [

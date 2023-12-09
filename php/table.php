@@ -4,7 +4,7 @@ include_once 'conn.php';
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $id = $_GET['id'];
     $tableName = 'table' . $id;
-    $query = "SELECT * FROM $tableName WHERE flag = 0 ORDER BY count DESC";
+    $query = "SELECT * FROM $tableName WHERE flag = 0 ORDER BY count DESC LIMIT 5";
     $query_run = mysqli_query($db, $query);
 
     if ($query_run) {
