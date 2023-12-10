@@ -1,6 +1,8 @@
 $(document).ready(function () {
     // Function to create content for the accordion button
     function createAccordionButtonContent(item) {
+
+
         var buttonContent = $(
             '<div class="d-flex align-items-center">' +
             '<div class="col d-flex align-items-center">' +
@@ -36,7 +38,7 @@ $(document).ready(function () {
             dataType: "json",
             data: { id: id },
             success: function (data) {
-                console.log("Data fetched successfully");
+                // console.log("Data fetched successfully");
                 createTable(data, id);
             },
             error: function (xhr, status, error) {
@@ -162,29 +164,42 @@ $(document).ready(function () {
         // Attach click event to dynamically added regBtn
 
         $(".regBtn").click(function (event) {
-            console.log("Register button clicked");
+            console.log("Register refreshed with id:", $(this).data("tableid"));
 
             // Access the clicked button using event.target
             var clickedButton = $(event.target);
 
             // Retrieve the waitType from the clicked button
+
             var waitType = clickedButton.data("type");
-
-            // console.log("waitType: " + waitType);
-            // console.log("waitMail: " + localStorage.getItem("email")) ;
-
-            // console.log($(this).data("tableid"));
             var tableid = $(this).data("tableid");
+
             $("#regForm").attr("data-tableid", tableid);
 
 
+
+            // debugger
+            // var element = document.getElementById("regForm");
+
+            // if (element) {
+            //     var attributes = element.attributes;
+
+            //     for (var i = 0; i < attributes.length; i++) {
+            //         console.log(attributes[i].name + ": " + attributes[i].value);
+            //     }
+            // } else {
+            //     console.log("Element not found");
+            // }
+
+
+            // end of debugger
 
 
             // Set the value of the modal input field
             $("#waitType").val(waitType);
             // $("#waitname").val(localStorage.getItem("email"));
             loggedIn(function (result) {
-                console.log(result);
+                // console.log(result);
                 if (result == true) {
                     $("#waitRegModal").modal("show");
                 } else {
@@ -207,7 +222,7 @@ $(document).ready(function () {
             url: "php/fetch.php",
             dataType: "json",
             success: function (data) {
-                console.log("Data fetched successfully");
+                // console.log("Data fetched successfully");
                 createAccordions(data);
             },
             error: function (xhr, status, error) {
@@ -224,7 +239,7 @@ $(document).ready(function () {
             dataType: "json",
             success: function (res) {
                 if (res.status === 200) {
-                    console.log("logged in");
+                    // console.log("logged in");
                     // add d-none class to lrbtns div
                     $("#lrBtns").addClass("d-none")
                     $("#loutBtn").removeClass("d-none")
@@ -242,7 +257,7 @@ $(document).ready(function () {
                     );
                     callback(true);
                 } else {
-                    console.log("not logged in");
+                    // console.log("not logged in");
                     $("#loutBtn").addClass("d-none")
                     $("#lrBtns").removeClass("d-none")
                     callback(false);
@@ -283,7 +298,7 @@ $(document).ready(function () {
             success: function (res) {
                 res = JSON.parse(res);
                 if (res.status === 200) {
-                    console.log("Login successful with email:", res.email);
+                    // console.log("Login successful with email:", res.email);
                     localStorage.setItem("email", res.email);
                     Swal.fire({
                         icon: "success",
@@ -340,8 +355,8 @@ $(document).ready(function () {
             success: function (res) {
                 // console.log('Registration successful');
                 // res = JSON.parse(res);
-                console.log(res);
-                console.log(res.message);
+                // console.log(res);
+                // console.log(res.message);
                 if (res.status === 200) {
                     Swal.fire({
                         icon: "success",
@@ -407,33 +422,51 @@ $(document).ready(function () {
 
     $("#regForm").submit(function (event) {
         event.preventDefault();
-        // console.log($(this).data("tableid"));
+    
+        var tableid;
+        var userid;
 
 
-        formData = $(this).serialize();
-        var tableid = $(this).data("tableid");
+        var element = document.getElementById("regForm");
+        if (element) {
+            var attributes = element.attributes;
+            for (var i = 0; i < attributes.length; i++) {
+                var attributeName = attributes[i].name;
+                var attributeValue = attributes[i].value;
+        
+                console.log("first consoling:", attributeName + ": " + attributeValue);
+        
+                // Check for specific attributes and assign values to variables
+                if (attributeName === "data-tableid") {
+                    tableid = attributeValue;
+                } else if (attributeName === "data-userid") {
+                    userid = attributeValue;
+                }
+            }
+        }
+    
+        var formData = new FormData(this);
+        // var tableid = $("#regForm").data("tableid");
         var waitname = $('#waitname').val();
         var waitType = $('#waitType').val();
-        var userid = $(this).data("userid");
-
-
-        formData += "&tableid=" + tableid;
-        formData += "&waitname=" + waitname;
-        formData += "&waitType=" + waitType;
-        formData += "&userid=" + userid;
-
-
+        // var userid = $(this).data("userid");
+    
+        formData.append("tableid", tableid);
+        formData.append("waitname", waitname);
+        formData.append("waitType", waitType);
+        formData.append("userid", userid);
+    
         console.log(formData);
-        console.log(tableid);
-
+    
         $.ajax({
             type: "POST",
             url: "php/regWaitlist.php",
             data: formData,
             dataType: "json",
+            contentType: false,
+            processData: false, // Important for FormData
             success: function (res) {
                 if (res.status === 200) {
-                    console.log("Registration successful with email:", res.email);
                     Swal.fire({
                         icon: "success",
                         title: "Success",
@@ -441,8 +474,10 @@ $(document).ready(function () {
                         text: res.message,
                     });
                     $("#waitRegModal").modal("hide");
+    
                     addTable(tableid);
                     fetchData();
+                    console.log("Registration successful");
                 } else {
                     Swal.fire({
                         icon: "error",
@@ -457,4 +492,5 @@ $(document).ready(function () {
             },
         });
     });
+    
 });
