@@ -271,24 +271,27 @@ $(document).ready(function () {
     }
 
 
-
     function urlCheck() {
-        /*
-        url get
-        so first we get the url
-        ther will be 2 things in the url
-        waitType
-        referal
-        we need to get these 2 values and set them to the form
-        */
         // get url
         var url = new URL(window.location.href);
-        // get waitType
-        var waitType = url.searchParams.get("w");
-        // get referal
-        var referal = url.searchParams.get("r");
-        // set waitType if not null
-        if (waitType !== null) {
+
+        // check if "w" parameter is present in the URL
+        if (url.searchParams.has("w")) {
+            // "w" is present, get waitType
+            var waitType = url.searchParams.get("w");
+
+            // set waitType
+            $("#waitType").val(waitType);
+
+            // check if "r" parameter is present
+            if (url.searchParams.has("r")) {
+                // "r" is present, get referal
+                var referal = url.searchParams.get("r");
+                // set referal
+                $("#referal").val(referal);
+            }
+
+            // make AJAX request for waitType
             $.ajax({
                 type: "GET",
                 url: "php/regWaitlist.php",
@@ -296,54 +299,72 @@ $(document).ready(function () {
                 data: { waitType: waitType },
                 success: function (res) {
                     if (res.status === 200) {
-                        // console.log("valid waitType");
-                        // set waitType
-                        $("#waitType").val(waitType);
+                        // set data-tableid if waitType is valid
                         $("#regForm").attr("data-tableid", res.tableid);
-
-
-                        console.log(res);
                     } else {
-                        //clean the url
-                        var url = window.location.href;
-                        var cleanUrl = url.substring(0, url.indexOf("?"));
-                        window.history.replaceState({}, document.title, cleanUrl);
-                        //clear all fields of modal
-                        $("#waitType").val("");
-                        $("#waitname").val("");
-
-                        //close modal
-                        $("#waitRegModal").modal("hide");
-                        
-                        
-                        Swal.fire({
-                            icon: "error",
-                            title: "Oops...",
-                            showCloseButton: true,
-                            text: "Invalid Item!",
-                        });
+                        // handle invalid waitType
+                        handleInvalidWaitType();
                     }
                 },
                 error: function (xhr, status, error) {
                     console.error("Error checking waitType:", error);
+                    // handle invalid waitType
+                    handleInvalidWaitType();
                 },
             });
-            // $("#waitType").val(waitType);
+
+            // open modal
+            $("#waitRegModal").modal("show");
         } else {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                showCloseButton: true,
-                text: "Invalid Item!",
-            });
+
+            if (url.searchParams.has("r")) {
+                // "r" is present, get referal
+                var referal = url.searchParams.get("r");
+                // set referal
+                $("#referal").val(referal);
+            } else {
+                // "w" is not present, handle accordingly
+                var currentUrl = window.location.href;
+                // find the index of "?"
+                var questionMarkIndex = currentUrl.indexOf("?");
+                // check if "?" is present and there are characters after it
+                if (questionMarkIndex !== -1 && questionMarkIndex < currentUrl.length - 1) {
+                    // characters are present after "?", clean the URL
+                    var cleanUrl = currentUrl.substring(0, questionMarkIndex);
+                    window.history.replaceState({}, document.title, cleanUrl);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        showCloseButton: true,
+                        text: "Invalid URL!",
+                    });
+                }
+            }
         }
-        // set referal if not null
-        if (referal !== null) {
-            $("#referal").val(referal);
-        }
-        // open modal
-        $("#waitRegModal").modal("show");
     }
+
+    function handleInvalidWaitType() {
+        // clean the URL
+        var url = window.location.href;
+        var cleanUrl = url.substring(0, url.indexOf("?"));
+        window.history.replaceState({}, document.title, cleanUrl);
+
+        // clear all fields of modal
+        $("#waitType").val("");
+
+        // close modal
+        $("#waitRegModal").modal("hide");
+
+        // show error message
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            showCloseButton: true,
+            text: "Invalid Item!",
+        });
+    }
+
+
 
 
     urlCheck();
