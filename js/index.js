@@ -423,10 +423,15 @@ $(document).ready(function () {
     $("#regForm").submit(function (event) {
         event.preventDefault();
     
+
+
+        // here i was having some issues with the table id
+        // when i try to access the table id like any other ways like data("tableid") or attr("data-tableid") it was returning wrong value
+        // i had to reload the page to get the correct value
+        // but somehow when i check the current assigned value to the tableid it was correct
+        // so i had to use this method to get the correct value
         var tableid;
         var userid;
-
-
         var element = document.getElementById("regForm");
         if (element) {
             var attributes = element.attributes;
@@ -446,9 +451,9 @@ $(document).ready(function () {
         }
     
         var formData = new FormData(this);
-        // var tableid = $("#regForm").data("tableid");
         var waitname = $('#waitname').val();
         var waitType = $('#waitType').val();
+        // var tableid = $("#regForm").data("tableid");
         // var userid = $(this).data("userid");
     
         formData.append("tableid", tableid);
@@ -464,7 +469,7 @@ $(document).ready(function () {
             data: formData,
             dataType: "json",
             contentType: false,
-            processData: false, // Important for FormData
+            processData: false,
             success: function (res) {
                 if (res.status === 200) {
                     Swal.fire({
