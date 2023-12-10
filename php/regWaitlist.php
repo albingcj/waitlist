@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Insert data into the table using a prepared statement
     $query = "INSERT INTO $tableid (name, userid) VALUES (?, ?)";
     $stmt = $db->prepare($query);
-    
+
     // Check if the statement was prepared successfully
     if ($stmt) {
         // Bind parameters
@@ -52,6 +52,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
     }
 
+    echo json_encode($res);
+}
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $waittype = $_GET['waitType'];
+    $query = "SELECT id FROM accordion WHERE type = '$waittype'";
+    
+    $result = $db->query($query);
+    
+    if ($result) {
+        if ($result->num_rows > 0) {
+            $tableid = $result->fetch_assoc()['id'];
+            
+            $res = [
+                'status' => 200,
+                'message' => "Table id found",
+                'tableid' => $tableid
+            ];
+        } else {
+            // No rows found
+            $res = [
+                'status' => 400,
+                'message' => "Table id not found"
+            ];
+            
+        }
+    } else {
+        // Query execution error
+        $res = [
+            'status' => 500,
+            'message' => "Error executing query: " . $db->error
+        ];
+    }
+    
     echo json_encode($res);
 }
 ?>

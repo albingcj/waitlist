@@ -272,15 +272,93 @@ $(document).ready(function () {
 
 
 
+    function urlCheck() {
+        /*
+        url get
+        so first we get the url
+        ther will be 2 things in the url
+        waitType
+        referal
+        we need to get these 2 values and set them to the form
+        */
+        // get url
+        var url = new URL(window.location.href);
+        // get waitType
+        var waitType = url.searchParams.get("w");
+        // get referal
+        var referal = url.searchParams.get("r");
+        // set waitType if not null
+        if (waitType !== null) {
+            $.ajax({
+                type: "GET",
+                url: "php/regWaitlist.php",
+                dataType: "json",
+                data: { waitType: waitType },
+                success: function (res) {
+                    if (res.status === 200) {
+                        // console.log("valid waitType");
+                        // set waitType
+                        $("#waitType").val(waitType);
+                        $("#regForm").attr("data-tableid", res.tableid);
 
 
+                        console.log(res);
+                    } else {
+                        //clean the url
+                        var url = window.location.href;
+                        var cleanUrl = url.substring(0, url.indexOf("?"));
+                        window.history.replaceState({}, document.title, cleanUrl);
+                        //clear all fields of modal
+                        $("#waitType").val("");
+                        $("#waitname").val("");
 
+                        //close modal
+                        $("#waitRegModal").modal("hide");
+                        
+                        
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            showCloseButton: true,
+                            text: "Invalid Item!",
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error checking waitType:", error);
+                },
+            });
+            // $("#waitType").val(waitType);
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                showCloseButton: true,
+                text: "Invalid Item!",
+            });
+        }
+        // set referal if not null
+        if (referal !== null) {
+            $("#referal").val(referal);
+        }
+        // open modal
+        $("#waitRegModal").modal("show");
+    }
+
+
+    urlCheck();
     // Fetch data on document ready
     fetchData();
     // already logged in ?
     loggedIn(function (isLoggedIn) {
         // console.log(isLoggedIn);
     });
+
+
+
+
+
+
 
 
     // login form
@@ -422,7 +500,8 @@ $(document).ready(function () {
 
     $("#regForm").submit(function (event) {
         event.preventDefault();
-    
+
+        urlCheck();
 
 
         // here i was having some issues with the table id
@@ -438,9 +517,9 @@ $(document).ready(function () {
             for (var i = 0; i < attributes.length; i++) {
                 var attributeName = attributes[i].name;
                 var attributeValue = attributes[i].value;
-        
+
                 console.log("first consoling:", attributeName + ": " + attributeValue);
-        
+
                 // Check for specific attributes and assign values to variables
                 if (attributeName === "data-tableid") {
                     tableid = attributeValue;
@@ -449,20 +528,20 @@ $(document).ready(function () {
                 }
             }
         }
-    
+
         var formData = new FormData(this);
         var waitname = $('#waitname').val();
         var waitType = $('#waitType').val();
         // var tableid = $("#regForm").data("tableid");
         // var userid = $(this).data("userid");
-    
+
         formData.append("tableid", tableid);
         formData.append("waitname", waitname);
         formData.append("waitType", waitType);
         formData.append("userid", userid);
-    
+
         console.log(formData);
-    
+
         $.ajax({
             type: "POST",
             url: "php/regWaitlist.php",
@@ -479,7 +558,7 @@ $(document).ready(function () {
                         text: res.message,
                     });
                     $("#waitRegModal").modal("hide");
-    
+
                     addTable(tableid);
                     fetchData();
                     console.log("Registration successful");
@@ -497,5 +576,7 @@ $(document).ready(function () {
             },
         });
     });
-    
+
 });
+
+
