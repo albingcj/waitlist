@@ -8,7 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $type = $_POST['waitType'];
     $refer = $_POST['referal'];
     $userid = $_POST['userid'];
-    $tableid = 'table' . $_POST['tableid'];
+    $tid = $_POST['tableid'];
+    $tableid = 'table' . $tid;
     // Insert data into the table using a prepared statement
     $query = "INSERT INTO $tableid (name, userid) VALUES (?, ?)";
     $stmt = $db->prepare($query);
@@ -19,8 +20,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param('si', $name, $userid);
         // Execute the statement
         $stmt->execute();
+
+
+        // $userlistquery = "UPDATE userlist SET joinedTables = CONCAT(joinedTables, ', $tid') WHERE id = $userid";
+        $userlistquery = "UPDATE userlist SET joinedTables = CONCAT_WS(',', joinedTables, $tid) WHERE id = $userid";
+
+        $userlistrun = mysqli_query($db, $userlistquery);
+
+
+
+
         // Check if the data was inserted successfully
-        if ($stmt->affected_rows > 0) {
+        if (($stmt->affected_rows > 0) && $userlistrun) {
             // Check if $refer is not null before incrementing count
             if ($refer !== null) {
                 // Increment count for every person with the same user ID in the same table
@@ -54,37 +65,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     echo json_encode($res);
 }
+// checking if the table actually exist while we do the link get methode for referral
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $waittype = $_GET['waitType'];
     $query = "SELECT id FROM accordion WHERE type = '$waittype'";
-    
+
     $result = $db->query($query);
-    
+
     if ($result) {
         if ($result->num_rows > 0) {
             $tableid = $result->fetch_assoc()['id'];
-            
+
             $res = [
                 'status' => 200,
                 'message' => "Table id found",
                 'tableid' => $tableid
             ];
         } else {
-            // No rows found
             $res = [
                 'status' => 400,
                 'message' => "Table id not found"
             ];
-            
         }
     } else {
-        // Query execution error
         $res = [
             'status' => 500,
             'message' => "Error executing query: " . $db->error
         ];
     }
-    
+
     echo json_encode($res);
 }
-?>

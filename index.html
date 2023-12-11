@@ -270,7 +270,11 @@
                       </button>
                     </div>
                     <div class="col-4 mx-1">
-                      <button type="submit" id="waitRegSubmit" class="col-12 btn btn-primary">
+                      <button
+                        type="submit"
+                        id="waitRegSubmit"
+                        class="col-12 btn btn-primary"
+                      >
                         Register
                       </button>
                     </div>
@@ -307,7 +311,7 @@
                 <div class="row">
                   <div class="col mx-2">
                     <button
-                    id="loginBtn"
+                      id="loginBtn"
                       type="button"
                       class="btn btn-primary"
                       data-bs-toggle="modal"
@@ -320,7 +324,7 @@
                 <div class="row">
                   <div class="col mx-2">
                     <button
-                    id="registerBtn"
+                      id="registerBtn"
                       type="button"
                       class="btn btn-primary"
                       data-bs-toggle="modal"
@@ -334,9 +338,9 @@
               <div class="col d-flex justify-content-center" id="loutBtn">
                 <div class="row">
                   <div class="col mx-2">
-                    <button type="button" 
-                    id="logoutBtn"
-                    class="btn btn-danger">Logout</button>
+                    <button type="button" id="logoutBtn" class="btn btn-danger">
+                      Logout
+                    </button>
                   </div>
                 </div>
               </div>
@@ -347,18 +351,22 @@
     </header>
     <main id="mainId">
       <div class="container">
+
+        <div class="row d-none" id="joinedHead">
+          <div class="col p-3">
+            <h2 id="perDet">Hi there!</h2>
+            <p>Log in to join the queue</p>
+            <h2 class="fw-bold">Your Waitlists</h2>
+          </div>
+        </div>
+        <div class="accordion rounded-0" id="joinedAccordionWait"></div>
+        
         <div class="row">
           <div class="col p-3">
-            <h2 id="perDet">
-              Hi there!
-            </h2>
-            <p>Log in to join the queue</p>
             <h2 class="fw-bold">Active Waitlists</h2>
           </div>
         </div>
-
-        <div class="accordion rounded-0" id="accordionWait">
-        </div>
+        <div class="accordion rounded-0" id="notJoinedAccordionWait"></div>
       </div>
     </main>
     <footer></footer>

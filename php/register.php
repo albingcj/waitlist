@@ -32,7 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = mysqli_prepare($db, $query);
         mysqli_stmt_bind_param($stmt, "sss", $name, $email, $password);
         
-        if (mysqli_stmt_execute($stmt)) {
+        $userlistquery = "INSERT INTO userlist (joinedTables) VALUES (NULL)";
+        $userlistrun = mysqli_query($db, $userlistquery);
+
+        // var_dump( $userlistrun);
+
+        if (mysqli_stmt_execute($stmt) && $userlistrun) {
             $data = [
                 'status' => '200',
                 'message' => 'Registration successful',

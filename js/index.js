@@ -85,7 +85,7 @@ $(document).ready(function () {
         var accordionBody = $(
             '<div id="collapse' +
             item.id +
-            '" class="accordion-collapse collapse show" data-bs-parent="#accordionWait">' +
+            '" class="accordion-collapse collapse show" data-bs-parent="#joinedAccordionWait">' +
             '<div class="accordion-body">' +
             '<div class="row" id="bodyContent">' +
             item.content +
@@ -143,22 +143,26 @@ $(document).ready(function () {
         // Create the accordion body
         var accordionBody = createAccordionBody(item);
 
-        // Append header and body to the accordion item
         accordionItem.append(accordionHeader, accordionBody);
 
         return accordionItem;
     }
     // Function to create accordion items dynamically
-    function createAccordions(data) {
-        var accordionContainer = $("#accordionWait");
+    function createAccordions(data1, container1, data2, container2) {
+        // Clear existing accordion items in both containers
+        container1.empty();
+        container2.empty();
 
-        // Clear existing accordion items
-        accordionContainer.empty();
 
-        // Iterate through the data and create accordion items
-        $.each(data, function (index, item) {
+        $.each(data1, function (index, item) {
             var accordionItem = createAccordionItem(item);
-            accordionContainer.append(accordionItem);
+            container1.append(accordionItem);
+        });
+    
+        // Iterate through the data2 and create accordion items for container2
+        $.each(data2, function (index, item) {
+            var accordionItem = createAccordionItem(item);
+            container2.append(accordionItem);
         });
 
         // Attach click event to dynamically added regBtn
@@ -221,9 +225,17 @@ $(document).ready(function () {
             type: "GET",
             url: "php/fetch.php",
             dataType: "json",
-            success: function (data) {
-                // console.log("Data fetched successfully");
-                createAccordions(data);
+            success: function (response) {
+                if ('data1' in response && 'data2' in response) {
+                    // Access the containers for accordion items
+                    var joinedAccordionContainer = $("#joinedAccordionWait");
+                    var notJoinedAccordionContainer = $("#notJoinedAccordionWait");
+    
+                    // Call createAccordions with the retrieved data and containers
+                    createAccordions(response.data1, joinedAccordionContainer, response.data2, notJoinedAccordionContainer);
+                } else {
+                    console.error("Invalid response format");
+                }
             },
             error: function (xhr, status, error) {
                 console.error("Error fetching accordion data:", error);
@@ -241,6 +253,9 @@ $(document).ready(function () {
                 if (res.status === 200) {
                     // console.log("logged in");
                     // add d-none class to lrbtns div
+
+                    $("#joinedHead").removeClass("d-none")
+
                     $("#lrBtns").addClass("d-none")
                     $("#loutBtn").removeClass("d-none")
                     var x = res.name.split(" ");
@@ -258,6 +273,8 @@ $(document).ready(function () {
                     callback(true);
                 } else {
                     // console.log("not logged in");
+                    $("#joinedHead").addClass("d-none")
+
                     $("#loutBtn").addClass("d-none")
                     $("#lrBtns").removeClass("d-none")
                     callback(false);
@@ -454,9 +471,10 @@ $(document).ready(function () {
             success: function (res) {
                 // console.log('Registration successful');
                 // res = JSON.parse(res);
-                // console.log(res);
-                // console.log(res.message);
-                if (res.status === 200) {
+                console.log(res);
+                console.log(res.status);
+                console.log(res.message);
+                if (res.status == 200) {
                     Swal.fire({
                         icon: "success",
                         title: "Success",
@@ -491,16 +509,17 @@ $(document).ready(function () {
             success: function (res) {
                 if (res.status === 200) {
                     localStorage.removeItem("email");
+                    $('#perDet').load(' #perDet');
+                    fetchData();
+
+                    loggedIn(function (isLoggedIn) {
+                        // console.log(isLoggedIn);
+                    });
                     Swal.fire({
                         icon: "success",
                         title: "Success",
                         showCloseButton: true,
                         text: res.message,
-                    });
-                    $('#perDet').load(' #perDet');
-
-                    loggedIn(function (isLoggedIn) {
-                        // console.log(isLoggedIn);
                     });
 
                 } else {
