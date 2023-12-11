@@ -2,6 +2,9 @@
 include_once('conn.php');
 session_start();
 
+
+
+
 // store the register details in the corresponding table
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['waitname'];
@@ -11,6 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tid = $_POST['tableid'];
     $tableid = 'table' . $tid;
     // Insert data into the table using a prepared statement
+
+    // checkAlreadyExist($userid);
+
     $query = "INSERT INTO $tableid (name, userid) VALUES (?, ?)";
     $stmt = $db->prepare($query);
 

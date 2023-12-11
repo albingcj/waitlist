@@ -20,6 +20,10 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
 
@@ -287,6 +291,89 @@
       </div>
     </div>
 
+    <!-- share modal -->
+    <div
+      class="modal fade"
+      id="shareModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="modalTitleId"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body text-center">
+            <div class="d-flex flex-column">
+              <div class="row justify-content-end">
+                <div class="col-12 text-end">
+                  <button
+                    type="button"
+                    class="btn-close shadow-none"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+              </div>
+
+              <div class="row justify-content-center p-1">
+                <div class="col-10">
+                  <h3 class="text-center">Share</h3>
+                </div>
+              </div>
+              <div class="row justify-content-center px-5 py-2 text-center">
+                <p>
+                  Refer to this link with your friends to earn more points and
+                  elevate your position on the waitlist.
+                </p>
+              </div>
+              <div class="row justify-content-center py-4">
+                <div class="row col-10 mb-2 d-flex justify-content-center">
+                  <!-- //caption -->
+
+                  <label for="link" class="col-form-label">Link</label>
+                  <div class="row d-flex">
+                    <input
+                      type="text"
+                      class="col form-control shadow-none rounded-3 text-center"
+                      name="link"
+                      id="link"
+                      placeholder="Sharable Link"
+                      disabled
+                    />
+                    <button
+                      id="copyLinkBtn"
+                      class="col-auto btn btn-primary ms-1"
+                    >
+                      <i class="fas fa-copy"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="row col-10 my-2 d-flex  justify-content-center ">
+                  <label for="code" class="col-form-label">Referal code</label>
+                  <div class="row d-flex justify-content-center ">
+                    <input
+                      type="text"
+                      class="form-control shadow-none rounded-3 text-center col"
+                      name="code"
+                      id="code"
+                      placeholder="Referal Code"
+                      disabled
+                    />
+                    <button
+                      id="copyRefBtn"
+                      class="col-auto btn btn-primary ms-1"
+                    >
+                      <i class="col-auto ms-1 fas fa-copy"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <header id="headerId">
       <div class="container">
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark p-3">
@@ -351,16 +438,14 @@
     </header>
     <main id="mainId">
       <div class="container">
-
         <div class="row d-none" id="joinedHead">
           <div class="col p-3">
-            <h2 id="perDet">Hi there!</h2>
-            <p>Log in to join the queue</p>
+            <h2 id="perDet">Hi there! Log in to join the queue</h2>
             <h2 class="fw-bold">Your Waitlists</h2>
           </div>
         </div>
         <div class="accordion rounded-0" id="joinedAccordionWait"></div>
-        
+
         <div class="row">
           <div class="col p-3">
             <h2 class="fw-bold">Active Waitlists</h2>

@@ -1,7 +1,22 @@
 $(document).ready(function () {
     // Function to create content for the accordion button
-    function createAccordionButtonContent(item) {
+    function createAccordionButtonContent(item, flagForButton) {
+        var btnx;
 
+        if (flagForButton === 1) {
+            btnx = '<div type="button" class="btn btn-success mt-3 rounded-0 shareBtn" data-type="' +
+                item.type +
+                '" data-tableid="' +
+                item.id +
+                '">Share<i class="fas fa-share mx-2"></i></div>';
+
+        } else {
+            btnx = '<div type="button" class="btn btn-primary mt-3 rounded-0 regBtn" data-type="' +
+                item.type +
+                '"data-tableid="' +
+                item.id +
+                '">Register <i class="fa-solid fa-ticket mx-1"></i></div>';
+        }
 
         var buttonContent = $(
             '<div class="d-flex align-items-center">' +
@@ -18,11 +33,7 @@ $(document).ready(function () {
             '<p class="mb-0">' +
             item.subhead +
             "</p>" +
-            '<div type="button" class="btn btn-primary mt-3 rounded-0 regBtn" data-type="' +
-            item.type +
-            '"data-tableid="' +
-            item.id +
-            '">Register</div>' +
+            btnx +
             "</div>" +
             "</div>" +
             "</div>"
@@ -30,6 +41,7 @@ $(document).ready(function () {
 
         return buttonContent;
     }
+
     // function to get contents of table body
     function addTable(id) {
         $.ajax({
@@ -119,7 +131,7 @@ $(document).ready(function () {
     }
 
     // Function to create a single accordion item
-    function createAccordionItem(item) {
+    function createAccordionItem(item, flagForButton) {
         var accordionItem = $('<div class="accordion-item "></div>');
         var accordionHeader = $('<h2 class="accordion-header"></h2>');
         var accordionButton = $('<button class="accordion-button shadow-none "></button>');
@@ -134,7 +146,7 @@ $(document).ready(function () {
         });
 
         // Create the content for the accordion button
-        var buttonContent = createAccordionButtonContent(item);
+        var buttonContent = createAccordionButtonContent(item, flagForButton);
         accordionButton.append(buttonContent);
 
         // Append the button to the accordion header
@@ -155,13 +167,13 @@ $(document).ready(function () {
 
 
         $.each(data1, function (index, item) {
-            var accordionItem = createAccordionItem(item);
+            var accordionItem = createAccordionItem(item, 1);
             container1.append(accordionItem);
         });
-    
+
         // Iterate through the data2 and create accordion items for container2
         $.each(data2, function (index, item) {
-            var accordionItem = createAccordionItem(item);
+            var accordionItem = createAccordionItem(item, 2);
             container2.append(accordionItem);
         });
 
@@ -179,25 +191,6 @@ $(document).ready(function () {
             var tableid = $(this).data("tableid");
 
             $("#regForm").attr("data-tableid", tableid);
-
-
-
-            // debugger
-            // var element = document.getElementById("regForm");
-
-            // if (element) {
-            //     var attributes = element.attributes;
-
-            //     for (var i = 0; i < attributes.length; i++) {
-            //         console.log(attributes[i].name + ": " + attributes[i].value);
-            //     }
-            // } else {
-            //     console.log("Element not found");
-            // }
-
-
-            // end of debugger
-
 
             // Set the value of the modal input field
             $("#waitType").val(waitType);
@@ -230,7 +223,7 @@ $(document).ready(function () {
                     // Access the containers for accordion items
                     var joinedAccordionContainer = $("#joinedAccordionWait");
                     var notJoinedAccordionContainer = $("#notJoinedAccordionWait");
-    
+
                     // Call createAccordions with the retrieved data and containers
                     createAccordions(response.data1, joinedAccordionContainer, response.data2, notJoinedAccordionContainer);
                 } else {
@@ -384,6 +377,9 @@ $(document).ready(function () {
 
 
 
+    /* ------------------------- autorun ----------------------------------------------*/
+
+    // check url contains any parameters
     urlCheck();
     // Fetch data on document ready
     fetchData();
@@ -392,12 +388,54 @@ $(document).ready(function () {
         // console.log(isLoggedIn);
     });
 
+    /* ---------------------------------------------------------------------------------*/
 
 
 
+    /* -------------------------------- other functions ---------------------------------------*/
+    $("#copyLinkBtn").click(myFunction1);
+    function myFunction1() {
+        // Get the text field
+        var copyText = document.getElementById("link");
+
+        // Select the text field
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+
+        // Copy the text inside the text field
+        navigator.clipboard.writeText(copyText.value);
+
+        Swal.fire({
+            icon: "success",
+            title: "Copied"
+        });
+    }
+
+
+    $("#copyRefBtn").click(myFunction2);
+    function myFunction2() {
+        // Get the text field
+        var copyText = document.getElementById("code");
+
+        // Select the text field
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+
+        // Copy the text inside the text field
+        navigator.clipboard.writeText(copyText.value);
+
+        Swal.fire({
+            icon: "success",
+            title: "Copied"
+        });
+    }
+
+
+    /* ------------------------------end of other functions------------------------------------*/
 
 
 
+    // -------------------------------other ajax requests---------------------------------
 
     // login form
     $("#loginForm").submit(function (event) {
@@ -616,6 +654,45 @@ $(document).ready(function () {
             },
         });
     });
+
+    // Use a static parent container that exists on page load
+    $("#joinedAccordionWait").on("click", ".shareBtn", function (event) {
+        console.log("Share button with id:", $(this).data("tableid"));
+        var waitType = $(this).data("type");
+        var uid;
+
+        // ajax to fetch user id from the session
+        $.ajax({
+            type: "GET",
+            url: "php/session.php",
+            dataType: "json",
+            success: function (res) {
+                if (res.status === 200) {
+                    uid = res.userid;
+
+                    // generate a link with the waitType and uid
+                    var link = "http://localhost/waitlist/?w=" + waitType + "&r=" + uid;
+
+                    // set the value of the input field
+                    $("#link").val(link);
+                    $("#code").val(uid);
+
+                    // open the modal
+                    $("#shareModal").modal("show");
+                } else {
+                    Swal.fire({
+                        icon: "info",
+                        title: "Oops...",
+                        showCloseButton: true,
+                        text: "Please login to share!",
+                    });
+                }
+            }
+        });
+    });
+
+    //--------------------------------------------------------------------------------------
+
 
 });
 
