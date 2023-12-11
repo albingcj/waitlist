@@ -44,14 +44,22 @@ $(document).ready(function () {
 
     // function to get contents of table body
     function addTable(id) {
+
+
         $.ajax({
             type: "GET",
             url: "php/table.php",
             dataType: "json",
-            data: { id: id },
+            data: {
+                id: id
+            },
             success: function (data) {
                 // console.log("Data fetched successfully");
-                createTable(data, id);
+                // console.log(data);
+                // console.log(data.topRecords);
+                console.log(data.user);
+                createTable(data.topRecords, id);
+                createTable2(data.user, id);
             },
             error: function (xhr, status, error) {
                 console.error("Error fetching accordion data:", error);
@@ -91,7 +99,31 @@ $(document).ready(function () {
             });
         }
     }
+    function createTable2(data, id) {
+        var tableBody = $("#tableBody" + id);
+        // tableBody.empty();
+        if (data.length === 0) {
+            // If data is empty, add a row indicating no data
+            tableBody.append(
+                `<tr>
+                <td colspan="3" class="text-center">Be the first one to be registered</td>
+            </tr>`
+            );
+        } else {
 
+            var tableRow = $(
+                `<tr class="table-primary">
+                    <td scope="row">${data.position}</td>
+                    <td>You</td>
+                    <td>${data.count}</td>
+                </tr>`
+            );
+
+
+            tableBody.append(tableRow);
+
+        }
+    }
     // Function to create the accordion body
     function createAccordionBody(item) {
         var accordionBody = $(
@@ -104,9 +136,6 @@ $(document).ready(function () {
             "</div>" +
             '<div class="table-responsive">' +
             '<table class="table table-hover table-borderless text-center border">' +
-            '<caption class="text-center">' +
-            item.last_updated +
-            "</caption>" +
             '<thead class="table-dark">' +
             '<tr class="table-danger">' +
             "<th>Rank</th>" +
@@ -256,7 +285,7 @@ $(document).ready(function () {
                     $('#waitname').val(y);
 
                     $("#regForm").attr("data-userid", res.userid);
-
+                    console.log(res.userid);
 
                     $("#perDet").html(
                         // `<p class="text-center">Welcome ${res.email}</p>` +
