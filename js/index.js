@@ -308,7 +308,7 @@ $(document).ready(function () {
                 dataType: "json",
                 data: { waitType: waitType },
                 success: function (res) {
-                    if (res.status === 200) {
+                    if (res.status == 200) {
                         // set data-tableid if waitType is valid
                         $("#regForm").attr("data-tableid", res.tableid);
                     } else {
@@ -364,6 +364,7 @@ $(document).ready(function () {
 
         // close modal
         $("#waitRegModal").modal("hide");
+        console.log("modal closed");
 
         // show error message
         Swal.fire({

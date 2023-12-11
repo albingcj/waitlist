@@ -22,8 +22,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         ";
         $query_run2 = mysqli_query($db, $query2);
 
-
-
+        
+        $query3 = "SELECT * FROM userlist WHERE id = $uid AND joinedTables IS NULL;";
+        $query_run3 = mysqli_query($db, $query3);
+        if(mysqli_num_rows($query_run3) > 0){
+            $query2 = "SELECT * FROM accordion WHERE id = $uid";
+            $query_run2 = mysqli_query($db, $query2);
+        }
 
 
         // $query3 = "SELECT TRIM(TRAILING ',' FROM joinedTables) FROM userlist WHERE id = $uid";
@@ -55,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
 
         // Include results from the second query in the same response
-        if ($query_run2) {
+        if ($query_run2 || $query_run3) {
             $data2 = array();
 
             while ($row = mysqli_fetch_assoc($query_run2)) {
