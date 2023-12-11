@@ -11,6 +11,6 @@ session_destroy();
 header('Content-Type: application/json');
 echo json_encode([
     'status' => 200,
-    'message' => 'Session destroyed'
+    'message' => 'Successfully logged out'
 ]);
 

@@ -54,9 +54,6 @@ $(document).ready(function () {
                 id: id
             },
             success: function (data) {
-                // console.log("Data fetched successfully");
-                // console.log(data);
-                // console.log(data.topRecords);
                 console.log(data.user);
                 createTable(data.topRecords, id);
                 createTable2(data.user, id);
@@ -494,6 +491,15 @@ $(document).ready(function () {
                     fetchData();
                     loggedIn(function (isLoggedIn) {
                         // console.log(isLoggedIn);
+                    });
+                } else if (res.status == 207) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Admin Login",
+                        showCloseButton: true,
+                        text: res.message,
+                    }).then(function () {
+                        window.location.href = "admin.html";
                     });
                 } else {
                     Swal.fire({

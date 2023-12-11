@@ -3,7 +3,7 @@ include_once('conn.php');
 session_start();
 
 
-function checkAlreadyExist($userid,$tid)
+function checkAlreadyExist($userid, $tid)
 {
     global $db;
 
@@ -31,7 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tableid = 'table' . $tid;
     // Insert data into the table using a prepared statement
 
-    if (!checkAlreadyExist($userid,$tableid)) {
+    if (!checkAlreadyExist($userid, $tableid)) {
+
+        $upAccTab = "UPDATE accordion SET total = total + 1, queue = queue + 1  WHERE id = $tid";
+        $upAccTabRun = mysqli_query($db, $upAccTab);
+        
 
         $query = "INSERT INTO $tableid (name, userid) VALUES (?, ?)";
         $stmt = $db->prepare($query);
@@ -86,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         echo json_encode($res);
-    }else{
+    } else {
         $res = [
             'status' => 400,
             'message' => "You have already joined this waitlist"
