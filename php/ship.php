@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $popmail = $popuser['email'];
 
             $to = $popmail;
-            $subject = 'Congratulations ' . $popname . '!';
+            $subject = 'Your ' . $pname . ' is here!';
             $message = '
             <!DOCTYPE html>
             <html lang="en">
@@ -109,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <img src="https://i.pinimg.com/originals/76/6a/65/766a657f2bbc5a38bb544880417a9aca.gif" alt="Happy Congrats GIF">
                 <p>Thank you for your patience. We are excited to share you the product link!</p>
                 <a href="https://www.google.com">Click here to get the product</a>
-                <p>Best regards,<br> The Waitlist Team</p>
+                <p>Best regards,<br> The '.$pname.' developers</p>
             </div>
             </body>
 
