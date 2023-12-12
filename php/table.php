@@ -12,16 +12,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $tableName = 'table' . $id;
 
     // Fetch top 5 records
-    $query = "SELECT * FROM $tableName ORDER BY count DESC LIMIT 5";
+    $query = "SELECT * FROM $tableName WHERE flag = 0 ORDER BY count DESC LIMIT 5";
+
     $query_run = mysqli_query($db, $query);
 
     // Fetch user count and position
     $query2 = "
     SELECT `count`,
-    (SELECT COUNT(*) + 1 FROM $tableName AS t2 WHERE t2.`count` > t1.`count`) AS position
+    (SELECT COUNT(*) + 1 FROM $tableName AS t2 WHERE t2.`count` > t1.`count` AND t2.flag = 0) AS position
 FROM $tableName AS t1
-WHERE userid = $uid;
-    ";
+WHERE userid = $uid AND flag = 0;";
 
     $query_run2 = mysqli_query($db, $query2);
     $user = [];
