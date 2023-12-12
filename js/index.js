@@ -18,7 +18,7 @@ $(document).ready(function () {
                     '">Register <i class="fa-solid fa-ticket mx-1"></i></div>';
             }
         } else {
-            btnx = '<div type="button" class="btn btn-secondary mt-3 rounded-0" disabled>Registration Closed</div>';
+            btnx = '<div type="button" class="btn btn-secondary mt-3 rounded-0" disabled>Registration Closed<i class="fa-solid fa-lock ms-2"></i></div>';
         }
 
         var buttonContent = $(
@@ -28,7 +28,7 @@ $(document).ready(function () {
             item.image +
             '" alt="' +
             item.name +
-            '" class="me-2 img-fluid" style="width:100px;height:100px" />' +
+            '" class="me-2 col-auto" style="width:100px;height:100px" />' +
             "<div>" +
             '<h5 class="mb-0">' +
             item.name +

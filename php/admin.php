@@ -40,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 'linkshared' => $linkshared,
                 'queue' => $r['queue'],
                 'total' => $r['total'],
+                'status' => $r['status']
             );
 
             $data[] = $rowData;

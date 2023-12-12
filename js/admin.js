@@ -17,13 +17,31 @@ $(document).ready(function () {
             {
                 data: null,
                 render: function (data, type, row) {
-                    return (
-                        '<button class="btn btn-primary btn-sm  text-light editBtn" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Edit waitlist" data-id="' +
-                        row.id +
-                        '"><i class="fa-solid fa-file-pen"></i></button> <button class="btn btn-danger btn-sm switchBtn" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Change visibility" data-id="' +
-                        row.id +
-                        '"> <i class="fas fa-eye"></i></button>'
-                    );
+
+                    if (row.status == 1) {
+
+                        return (
+                            '<div class="d-flex"><button class="btn btn-primary btn-sm  text-light editBtn mx-1" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Edit waitlist" data-id="' +
+                            row.id +
+                            '"><i class="fa-solid fa-file-pen"></i></button> <button class="btn btn-success btn-sm switchBtn mx-1" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Change visibility" data-id="' +
+                            row.id +
+                            '"> <i class="fas fa-eye"></i></button> <button class="btn btn-dark btn-sm mailBtn mx-1" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Ship products" data-id="' +
+                            row.id +
+                            '"> <i class="fa-solid fa-envelope-circle-check"></i></i></button></div>'
+
+                        );
+                    } else {
+                        return (
+                            '<div class="d-flex"><button class="btn btn-primary btn-sm  text-light editBtn mx-1" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Edit waitlist" data-id="' +
+                            row.id +
+                            '"><i class="fa-solid fa-file-pen"></i></button> <button class="btn btn-danger btn-sm switchBtn mx-1" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Change visibility" data-id="' +
+                            row.id +
+                            '"> <i class="fas fa-eye-slash"></i></button> <button class="btn btn-dark btn-sm mailBtn mx-1" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Ship products" data-id="' +
+                            row.id +
+                            '"> <i class="fa-solid fa-envelope-circle-check"></i></i></button></div>'
+
+                        );
+                    }
                 },
             },
         ],
@@ -154,6 +172,89 @@ $(document).ready(function () {
         })
 
     });
+
+    $("#dataTable").on("click", ".mailBtn", function (event) {
+        var productId = $(this).data('id');
+
+        Swal.fire({
+            title: 'How many products ready to ship?',
+            input: 'number',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            cancelButtonColor: '#3085d6',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Ship it!'
+        }).then((result) => {
+            if (result.value <= 0) {
+                console.log("0");
+                Swal.fire({
+                    icon: "info",
+                    title: "Oops...",
+                    showCloseButton: true,
+                    text: "You can't ship 0 products!",
+                });
+                return;
+            }
+
+            if (result.isConfirmed) {
+                Swal.fire({
+                    imageUrl: "https://cdn.dribbble.com/users/1914549/screenshots/5361637/day22.gif",
+                    imageHeight: 200,
+                    imageAlt: "A tall image",
+                    color: "#716add",
+                    title: 'Sending mails...one by one',
+                    timerProgressBar: true,
+                    allowOutsideClick: false,
+                    showConfirmButton: false, // Remove the OK button
+                    didOpen: () => {
+                        Swal.showLoading();
+
+                        // Make your AJAX request here
+                        $.ajax({
+                            type: "POST",
+                            url: "php/ship.php",
+                            data: {
+                                id: productId,
+                                count: result.value
+                            },
+                            success: function (res) {
+                                console.log(res);
+
+                                // Close the Swal when the AJAX request is complete
+                                Swal.close();
+                                $('#dataTable').DataTable().ajax.reload();
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Success",
+                                    showCloseButton: true,
+                                    text: 'Mails are sending...',
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                console.error("Error during AJAX request:", error);
+                                $('#dataTable').DataTable().ajax.reload();
+
+                                // Close the Swal when the AJAX request encounters an error
+                                Swal.close();
+
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Error",
+                                    showCloseButton: true,
+                                    text: 'Mails are not sent completely',
+                                });
+                            },
+                        });
+                    },
+                });
+
+            }
+        });
+    });
+
+
 });
 
 
@@ -239,6 +340,19 @@ $(document).ready(function () {
 
     $('#newWait').submit(function (event) {
         event.preventDefault();
+
+        if ($('#waitSub').val().length > 250) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                showCloseButton: true,
+                text: "Subhead is too long!",
+            });
+            return;
+        }
+
+
+
         data = $(this).serialize();
         // console.log(data);
         $.ajax({
