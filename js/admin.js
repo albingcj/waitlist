@@ -11,16 +11,18 @@ $(document).ready(function () {
             { data: "id" },
             { data: "name" },
             { data: "type" },
-            { data: "queue" },
             { data: "linkshared" },
+            { data: "queue" },
             { data: "total" },
             {
                 data: null,
                 render: function (data, type, row) {
                     return (
-                        '<button class="btn btn-info btn-sm editBtn" data-id="' +
+                        '<button class="btn btn-primary btn-sm  text-light editBtn" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Edit waitlist" data-id="' +
                         row.id +
-                        '">Edit <i class="fa fa-pencil"></i></button>'
+                        '"><i class="fa-solid fa-file-pen"></i></button> <button class="btn btn-danger btn-sm switchBtn" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Change visibility" data-id="' +
+                        row.id +
+                        '"> <i class="fas fa-eye"></i></button>'
                     );
                 },
             },
@@ -39,15 +41,22 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             url: "php/admin.php",
-            data: {tableid: data},
+            data: { tableid: data },
             dataType: "json",
             success: function (res) {
+                console.log("res", res);
                 if (res.status == 200) {
+
+
+                    // console.log("res", res.status);
+                    // console.log(12345);
+
                     $('#idx').val(data);
                     $('#editName').val(res.name);
                     $('#editType').val(res.type);
                     $('#editSub').val(res.subhead);
                     $('#editCont').val(res.content);
+                    $('#editImg').val(res.img);
                     $('#editWaitModal').modal('show');
                 } else {
                     Swal.fire({
@@ -97,51 +106,59 @@ $(document).ready(function () {
                 console.error("Error logging out:", error);
             },
         });
-        
+
+    });
+
+    $("#dataTable").on("click", ".switchBtn", function (event) {
+        var data = $(this).data('id');
+        console.log("switch", data);
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to change the visibility of this waitlist?",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonColor: '#3085d6',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Yes, change it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "php/admin.php",
+                    data: { switchid: data },
+                    dataType: "json",
+                    success: function (res) {
+                        console.log("res", res);
+                        if (res.status == 200) {
+                            $('#dataTable').DataTable().ajax.reload();
+                            Swal.fire({
+                                icon: "success",
+                                title: "Success",
+                                showCloseButton: true,
+                                text: res.message,
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                showCloseButton: true,
+                                text: res.message,
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error logging out:", error);
+                    },
+                });
+            }
+        })
+
     });
 });
 
 
 
 $(document).ready(function () {
-
-    // function createTable(data) {
-    //     var table = document.getElementById("adminTable");
-    //     //clear the table
-    //     table.innerHTML = "";
-
-    //     data.forEach(function (user) {
-    //         // console.log(user);
-    //         var row = `
-    //             <tr class="text-center">
-    //                 <td>${user.id}</td>
-    //                 <td>${user.name}</td>
-    //                 <td>${user.type}</td>
-    //                 <td>${parseInt(user.total)-parseInt(user.queue)}</td>
-    //                 <td>${user.queue}</td>
-    //                 <td>${user.total}</td>
-    //                 <td></td>
-    //             </tr>
-    //         `;
-    //         // Append the row to the table
-    //         table.innerHTML += row;
-    //     });
-    // }
-
-    // function fetch() {
-    //     $.ajax({
-    //         type: "GET",
-    //         url: "php/admin.php",
-    //         dataType: "json",
-    //         success: function (res) {
-    //             createTable(res);
-    //         },
-    //         error: function (xhr, status, error) {
-    //             console.error("Error fetching data:", error);
-    //         },
-    //     });
-    // }
-
 
     function loggedIn(callback) {
         $.ajax({
@@ -179,7 +196,6 @@ $(document).ready(function () {
 
     loggedIn(function (isLoggedIn) {
     });
-    // fetch();
 
     // -------------------------------------------------------------------
 
@@ -256,7 +272,7 @@ $(document).ready(function () {
         });
     });
 
-    
+
 
 });
 

@@ -22,10 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         ";
         $query_run2 = mysqli_query($db, $query2);
 
-        
+
         $query3 = "SELECT * FROM userlist WHERE id = $uid AND joinedTables IS NULL;";
         $query_run3 = mysqli_query($db, $query3);
-        if(mysqli_num_rows($query_run3) > 0){
+        if (mysqli_num_rows($query_run3) > 0) {
             $query2 = "SELECT * FROM accordion WHERE id = $uid";
             $query_run2 = mysqli_query($db, $query2);
         }
@@ -44,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     'subhead' => $row['subhead'],
                     'type' => $row['type'],
                     'content' => $row['content'],
-                    'image' => 'https://www.placeholder.com/400',
-                    // 'image' => $row['image'],
+                    'image' => $row['image'],
+                    'status' => $row['status']
                 );
             }
         } else {
@@ -56,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 'type' => '',
                 'content' => '',
                 'image' => '',
+                'status' => ''
             );
         }
 
@@ -70,8 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     'subhead' => $row['subhead'],
                     'type' => $row['type'],
                     'content' => $row['content'],
-                    'image' => 'https://www.placeholder.com/400',
-                    // 'image' => $row['image'],
+                    'image' => $row['image'],
+                    'status' => $row['status']
                 );
             }
 
@@ -90,8 +91,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 'subhead' => $row['subhead'],
                 'type' => $row['type'],
                 'content' => $row['content'],
-                'image' => 'https://www.placeholder.com/400',
-                // 'image' => $row['image'],
+                // 'image' => 'https://www.placeholder.com/400',
+                'image' => $row['image'],
+                'status' => $row['status']
             );
         }
         echo json_encode(['data2' => $data, 'data1' => []]);

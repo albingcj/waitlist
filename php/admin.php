@@ -15,8 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 'type' => $res['type'],
                 'subhead' => $res['subhead'],
                 'content' => $res['content'],
+                'img' => $res['image'],
             ];
-        }else{
+        } else {
             $data = [
                 'status' => 400,
                 'message' => "Table id not found"
@@ -55,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $waitProductId = $_POST['waitProductId'];
         $waitSub = $_POST['waitSub'];
         $waitDesc = $_POST['waitDesc'];
+        $waitImg  = $_POST['waitImg'];
 
         // Fetch the maximum id from the accordion table
         $query = "SELECT MAX(id) FROM accordion";
@@ -78,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $run = mysqli_query($db, $createTableQuery);
         if ($run) {
             // Insert the data into the accordion table
-            $insertQuery = "INSERT INTO accordion (name, type, subhead, content) VALUES ('$waitName', '$waitProductId', '$waitSub', '$waitDesc')";
+            $insertQuery = "INSERT INTO accordion (name, type, subhead, content, image) VALUES ('$waitName', '$waitProductId', '$waitSub', '$waitDesc', '$waitImg')";
             $run = mysqli_query($db, $insertQuery);
             if ($run) {
                 $res = array(
@@ -99,22 +101,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         echo json_encode($res);
-    }
-    if(isset($_POST['editName'])){
+    } else if (isset($_POST['editName'])) {
         $ename = $_POST['editName'];
         $etype = $_POST['editType'];
         $esub = $_POST['editSub'];
         $edesc = $_POST['editCont'];
+        $edimg = $_POST['editImg'];
         $tableid = $_POST['idx'];
 
-        $query = "UPDATE accordion SET name = '$ename', type = '$etype', subhead = '$esub', content = '$edesc' WHERE id = '$tableid'";
+        $query = "UPDATE accordion SET name = '$ename', type = '$etype', subhead = '$esub', content = '$edesc', image = '$edimg' WHERE id = '$tableid'";
         $result = mysqli_query($db, $query);
-        if($result){
+        if ($result) {
             $res = array(
                 "status" => 200,
                 "message" => "Accordion updated successfully"
             );
-        }else{
+        } else {
             $res = array(
                 "status" => 400,
                 "message" => "Error while updating accordion"
@@ -122,5 +124,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         echo json_encode($res);
         return;
+    } else if (isset($_POST['switchid'])) {
+        $id = $_POST['switchid'];
+        $query = "UPDATE accordion SET status = (1 - status) WHERE id = '$id'";
+        $result = mysqli_query($db, $query);
+        if ($result) {
+            $res = array(
+                "status" => 200,
+                "message" => "Switched status successfully"
+            );
+        } else {
+            $res = array(
+                "status" => 400,
+                "message" => "Error while changing status"
+            );
+        }
+        echo json_encode($res);
     }
 }

@@ -2,20 +2,23 @@ $(document).ready(function () {
     // Function to create content for the accordion button
     function createAccordionButtonContent(item, flagForButton) {
         var btnx;
+        if (item.status == 0) {
+            if (flagForButton === 1) {
+                btnx = '<div type="button" class="btn btn-success mt-3 rounded-0 shareBtn" data-type="' +
+                    item.type +
+                    '" data-tableid="' +
+                    item.id +
+                    '">Share<i class="fas fa-share mx-2"></i></div>';
 
-        if (flagForButton === 1) {
-            btnx = '<div type="button" class="btn btn-success mt-3 rounded-0 shareBtn" data-type="' +
-                item.type +
-                '" data-tableid="' +
-                item.id +
-                '">Share<i class="fas fa-share mx-2"></i></div>';
-
+            } else {
+                btnx = '<div type="button" class="btn btn-primary mt-3 rounded-0 regBtn" data-type="' +
+                    item.type +
+                    '"data-tableid="' +
+                    item.id +
+                    '">Register <i class="fa-solid fa-ticket mx-1"></i></div>';
+            }
         } else {
-            btnx = '<div type="button" class="btn btn-primary mt-3 rounded-0 regBtn" data-type="' +
-                item.type +
-                '"data-tableid="' +
-                item.id +
-                '">Register <i class="fa-solid fa-ticket mx-1"></i></div>';
+            btnx = '<div type="button" class="btn btn-secondary mt-3 rounded-0" disabled>Registration Closed</div>';
         }
 
         var buttonContent = $(
@@ -25,7 +28,7 @@ $(document).ready(function () {
             item.image +
             '" alt="' +
             item.name +
-            '" class="me-2 img-fluid" height="100" width="100" />' +
+            '" class="me-2 img-fluid" style="width:100px;height:100px" />' +
             "<div>" +
             '<h5 class="mb-0">' +
             item.name +
@@ -128,7 +131,7 @@ $(document).ready(function () {
             item.id +
             '" class="accordion-collapse collapse show" data-bs-parent="#joinedAccordionWait">' +
             '<div class="accordion-body">' +
-            '<div class="row" id="bodyContent">' +
+            '<div class="row p-3" id="bodyContent">' +
             item.content +
             "</div>" +
             '<div class="table-responsive">' +
@@ -244,14 +247,14 @@ $(document).ready(function () {
             type: "GET",
             url: "php/fetch.php",
             dataType: "json",
-            success: function (response) {
-                if ('data1' in response && 'data2' in response) {
+            success: function (res) {
+                if ('data1' in res && 'data2' in res) {
                     // Access the containers for accordion items
                     var joinedAccordionContainer = $("#joinedAccordionWait");
                     var notJoinedAccordionContainer = $("#notJoinedAccordionWait");
 
                     // Call createAccordions with the retrieved data and containers
-                    createAccordions(response.data1, joinedAccordionContainer, response.data2, notJoinedAccordionContainer);
+                    createAccordions(res.data1, joinedAccordionContainer, res.data2, notJoinedAccordionContainer);
                 } else {
                     console.error("Invalid response format");
                 }
