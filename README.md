@@ -107,6 +107,15 @@ password : Admin@1
    - Each new waitlist creation results in a specific table, reducing search time and improving performance.
    - Userlist table updates efficiently by appending values to the existing comma-separated values.
 
+9. **Technologies Used:**
+   - PHP
+   - HTML
+   - JS
+   - jQuery
+   - MySQL
+   - SweetAlert2
+   - phpmailer
+
 ## Developer
 
 - Albin George C J
