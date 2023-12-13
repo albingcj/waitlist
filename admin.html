@@ -293,6 +293,58 @@
       </div>
     </div>
 
+    <!-- view details modal -->
+    <div
+      class="modal fade"
+      id="dataModal"
+      tabindex="-1"
+      aria-labelledby="dataModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="dataModalLabel">Data Table Modal</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="col-12 table-responsive">
+              <table
+                id="dataTable2"
+                class="table table-bordered table-hover text-center table-responsive"
+              >
+                <thead class="table-dark">
+                  <tr>
+                    <th>Position</th>
+                    <th>Name</th>
+                    <th>Referral Points</th>
+                    <th>Mail Status</th>
+                  </tr>
+                </thead>
+                <!-- DataTable content will be added here -->
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+
+
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
     <header id="headerId">
       <div class="container">
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark p-3">
@@ -329,38 +381,36 @@
     </header>
     <main>
       <div class="container">
-        <div class="row d-flex justify-content-evenly m-3 p-4 border">
-          <!-- add new products modal -->
-          <div class="col-6 d-flex align-items-center justify-content-center">
-            <div class="col-auto fs-5 fw-bold">Add New Waitlist</div>
-          </div>
-          <div class="col-auto">
-            <button
-              type="button"
-              class="btn btn-outline-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#modalId"
-            >
-              Add new waitlist
-            </button>
-          </div>
-        </div>
+        <div class="row">
+          <div class="p-3 d-flex justify-content-evenly align-items-center">
+            <div class="row col">
+              <h4 class="text-center my-2 fw-bold">WAITLISTS</h4>
+            </div>
+            <div class="col-auto mx-2">
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#modalId"
+              >
+                Add new
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
 
-        <div class="row">
-          <div class="col-12">
-            <h1 class="text-center my-2">All waitlists</h1>
-          </div>
-        </div>
-        <div class="row">
-          <div class="p-3 text-center">
-            <button id="refreshButton" class="btn btn-outline-primary">
-              Refresh Content Manually
-              <i class="fas fa-sync-alt"></i>
-            </button>
+            <div class="col-auto mx-2">
+              <button id="refreshButton" class="btn btn-outline-primary">
+                Refresh
+                <i class="fas fa-sync-alt"></i>
+              </button>
+            </div>
           </div>
           <div class="col p-4">
             <div class="table-responsive">
-              <table class="table table-hover text-center" id="dataTable">
+              <table
+                class="table table-bordered table-hover text-center"
+                id="dataTable"
+              >
                 <thead class="table-dark text-center">
                   <tr>
                     <th>Id</th>

@@ -1,4 +1,7 @@
 $(document).ready(function () {
+
+
+
     var dataTable = $("#dataTable").DataTable({
         lengthMenu: [10, 25, 50, 100],
         ajax: {
@@ -27,7 +30,9 @@ $(document).ready(function () {
                             row.id +
                             '"> <i class="fas fa-eye"></i></button> <button class="btn btn-dark btn-sm mailBtn mx-1" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Ship products" data-id="' +
                             row.id +
-                            '"> <i class="fa-solid fa-envelope-circle-check"></i></i></button></div>'
+                            '"> <i class="fa-solid fa-envelope-circle-check"></i></i></button><button id="view" class="btn btn-primary" data-id="' +
+                            row.id +
+                            '"><i class="fa-solid fa-clipboard-list"></i></button></div>'
 
                         );
                     } else {
@@ -38,7 +43,9 @@ $(document).ready(function () {
                             row.id +
                             '"> <i class="fas fa-eye-slash"></i></button> <button class="btn btn-dark btn-sm mailBtn mx-1" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Ship products" data-id="' +
                             row.id +
-                            '"> <i class="fa-solid fa-envelope-circle-check"></i></i></button></div>'
+                            '"> <i class="fa-solid fa-envelope-circle-check"></i></i></button><button id="view" class="btn btn-primary" data-id="' +
+                            row.id +
+                            '"><i class="fa-solid fa-clipboard-list"></i></button></div>'
 
                         );
                     }
@@ -46,6 +53,11 @@ $(document).ready(function () {
             },
         ],
     });
+
+
+    var dataTable2 = $("#dataTable2").DataTable();
+
+
 
     // Manually trigger the AJAX call to populate the table
     $("#refreshButton").on("click", function () {
@@ -254,6 +266,41 @@ $(document).ready(function () {
         });
     });
 
+    $("#dataTable").on("click", "#view", function (event) {
+        
+        var id = $(this).data('id');
+
+        // Get the data from the server
+        $.ajax({
+            url: "php/down.php",
+            type: "GET",
+            data: { id: id },
+            dataType: "json",
+            success: function (data) {
+                // Clear the existing data from the table
+                dataTable2.clear();
+
+                // Loop through the array and add the data to the table
+                for (var i = 0; i < data.length; i++) {
+                    dataTable2.row.add([
+                        i+1,
+                        data[i].name,
+                        data[i].referal,
+                        data[i].status,
+                    ]);
+                }
+
+                // Redraw the table
+                dataTable2.draw();
+            },error: function (xhr, status, error) {
+                console.error("Error during AJAX request:", error);
+            },
+
+        });
+
+        $("#dataModal").modal("show");
+
+    });
 
 });
 
@@ -283,10 +330,12 @@ $(document).ready(function () {
         // console.log(result);
         if (result == false) {
             Swal.fire({
+                timer: 1000,
                 icon: "error",
                 title: "Oops...",
-                showCloseButton: true,
+                showConfirmButton: false,
                 text: "You are not logged in!",
+                backdrop: `rgba(0,0,0,1)`
             }).then(function () {
                 window.location.href = "index.html";
             });
@@ -351,6 +400,7 @@ $(document).ready(function () {
             return;
         }
 
+        //if waitDesc contains any single quotes or double show warning
 
 
         data = $(this).serialize();
@@ -389,5 +439,7 @@ $(document).ready(function () {
 
 
 });
+
+
 
 

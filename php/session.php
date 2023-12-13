@@ -19,6 +19,5 @@ if (isset($_SESSION['email'])) {
     ];
 }
 
-// echo '<script>console.log(' . $_SESSION['email'] . ');</script>';
 
 echo json_encode($res);

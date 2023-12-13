@@ -59,49 +59,84 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $waitDesc = $_POST['waitDesc'];
         $waitImg  = $_POST['waitImg'];
 
-        // Fetch the maximum id from the accordion table
+        // Fetch the maximum id from the accordion table using prepared statement
         $query = "SELECT MAX(id) FROM accordion";
-        $result = mysqli_query($db, $query);
-        $row = mysqli_fetch_array($result);
-        $tableId = $row[0] + 1;
+        $stmt = mysqli_prepare($db, $query);
 
-        // Create a new table
-        $createTableQuery = "
-            CREATE TABLE `table$tableId` (
-              `id` int(11) NOT NULL AUTO_INCREMENT,
-              `userid` int(11) NOT NULL,
-              `name` varchar(255) NOT NULL,
-              `count` int(11) NOT NULL DEFAULT 100,
-              `flag` int(11) NOT NULL DEFAULT 0,
-              PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-        ";
+        if ($stmt) {
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_bind_result($stmt, $maxId);
+            mysqli_stmt_fetch($stmt);
+            mysqli_stmt_close($stmt);
 
-        // Execute the create table query
-        $run = mysqli_query($db, $createTableQuery);
-        if ($run) {
-            // Insert the data into the accordion table
-            $insertQuery = "INSERT INTO accordion (name, type, subhead, content, image) VALUES ('$waitName', '$waitProductId', '$waitSub', '$waitDesc', '$waitImg')";
-            $run = mysqli_query($db, $insertQuery);
-            if ($run) {
-                $res = array(
-                    "status" => 200,
-                    "message" => "Waitlist created successfully"
-                );
+            $tableId = $maxId + 1;
+
+            // Insert the data into the accordion table using prepared statement
+            $insertQuery = "INSERT INTO accordion (name, type, subhead, content, image) VALUES (?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($db, $insertQuery);
+
+            if ($stmt) {
+                mysqli_stmt_bind_param($stmt, "sssss", $waitName, $waitProductId, $waitSub, $waitDesc, $waitImg);
+                $run = mysqli_stmt_execute($stmt);
+                mysqli_stmt_close($stmt);
+
+                if ($run) {
+                    // Create a new table using prepared statement
+                    $createTableQuery = "
+                        CREATE TABLE `table$tableId` (
+                          `id` int(11) NOT NULL AUTO_INCREMENT,
+                          `userid` int(11) NOT NULL,
+                          `name` varchar(255) NOT NULL,
+                          `count` int(11) NOT NULL DEFAULT 100,
+                          `flag` int(11) NOT NULL DEFAULT 0,
+                          PRIMARY KEY (`id`)
+                        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+                    ";
+
+                    $stmt = mysqli_prepare($db, $createTableQuery);
+
+                    if ($stmt) {
+                        $run = mysqli_stmt_execute($stmt);
+                        mysqli_stmt_close($stmt);
+
+                        if ($run) {
+                            $res = array(
+                                "status" => 200,
+                                "message" => "Waitlist created successfully"
+                            );
+                        } else {
+                            $res = array(
+                                "status" => 400,
+                                "message" => "Error while creating table"
+                            );
+                        }
+                    } else {
+                        $res = array(
+                            "status" => 500,
+                            "message" => "Error preparing create table statement"
+                        );
+                    }
+                } else {
+                    $res = array(
+                        "status" => 400,
+                        "message" => "Error while inserting data into accordion table"
+                    );
+                }
             } else {
                 $res = array(
-                    "status" => 400,
-                    "message" => "Error while inserting data into accordion table"
+                    "status" => 500,
+                    "message" => "Error preparing insert statement"
                 );
             }
+
+            echo json_encode($res);
         } else {
             $res = array(
                 "status" => 500,
-                "message" => "Error while creating table"
+                "message" => "Error preparing select statement"
             );
+            echo json_encode($res);
         }
-
-        echo json_encode($res);
     } else if (isset($_POST['editName'])) {
         $ename = $_POST['editName'];
         $etype = $_POST['editType'];
@@ -110,13 +145,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $edimg = $_POST['editImg'];
         $tableid = $_POST['idx'];
 
-        $query = "UPDATE accordion SET name = '$ename', type = '$etype', subhead = '$esub', content = '$edesc', image = '$edimg' WHERE id = '$tableid'";
-        $result = mysqli_query($db, $query);
-        if ($result) {
-            $res = array(
-                "status" => 200,
-                "message" => "Accordion updated successfully"
-            );
+        $query = "UPDATE accordion SET name = ?, type = ?, subhead = ?, content = ?, image = ? WHERE id = ?";
+        $stmt = mysqli_prepare($db, $query);
+        if ($stmt) {
+
+            mysqli_stmt_bind_param($stmt, "sssssi", $ename, $etype, $esub, $edesc, $edimg, $tableid);
+            $result = mysqli_stmt_execute($stmt);
+
+            if ($result) {
+                $res = array(
+                    "status" => 200,
+                    "message" => "Accordion updated successfully"
+                );
+            } else {
+                $res = array(
+                    "status" => 400,
+                    "message" => "Error while updating accordion"
+                );
+            }
         } else {
             $res = array(
                 "status" => 400,

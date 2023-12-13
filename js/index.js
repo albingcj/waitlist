@@ -558,6 +558,7 @@ $(document).ready(function () {
                         showCloseButton: true,
                         text: res.message,
                     });
+                    $("#registerForm")[0].reset();
                     $("#registerModal").modal("hide");
 
                 } else {
