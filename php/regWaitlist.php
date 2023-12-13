@@ -3,8 +3,7 @@ include_once('conn.php');
 session_start();
 
 
-function checkAlreadyExist($userid, $tid)
-{
+function checkAlreadyExist($userid, $tid){
     global $db;
 
     $query = "SELECT * FROM $tid WHERE userid = ?";
@@ -42,9 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Check if the statement was prepared successfully
         if ($stmt) {
-            // Bind parameters
             $stmt->bind_param('si', $name, $userid);
-            // Execute the statement
             $stmt->execute();
 
 

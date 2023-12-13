@@ -1,6 +1,8 @@
 <?php
 include_once("conn.php");
 
+// data for datatable2
+// shows all the content of the clicked table
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $id = $_GET['id'];
     $table = 'table'.$id;

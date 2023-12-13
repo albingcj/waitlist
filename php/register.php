@@ -17,6 +17,7 @@ function ifExist($email)
     return $result;
 }
 
+// registering a new user
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['regName'];
     $email = $_POST['regEmail'];

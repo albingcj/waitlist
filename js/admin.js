@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
-
-
+    // main datatable which shows the entire accordion table content
+    // datatable methode 1
     var dataTable = $("#dataTable").DataTable({
         lengthMenu: [10, 25, 50, 100],
         ajax: {
@@ -54,7 +54,7 @@ $(document).ready(function () {
         ],
     });
 
-
+    // specific modal content table declaration
     var dataTable2 = $("#dataTable2").DataTable();
 
 
@@ -64,9 +64,13 @@ $(document).ready(function () {
         dataTable.ajax.reload();
     });
 
+
+    /* buttons inside the main datatable>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+
+    // edit waitlist modal populating
     $("#dataTable").on("click", ".editBtn", function (event) {
         var data = $(this).data('id');
-        console.log("edit", data);
+        // console.log("edit", data);
 
         $.ajax({
             type: "GET",
@@ -74,13 +78,10 @@ $(document).ready(function () {
             data: { tableid: data },
             dataType: "json",
             success: function (res) {
-                console.log("res", res);
+                // console.log("res", res);
                 if (res.status == 200) {
 
-
-                    // console.log("res", res.status);
-                    // console.log(12345);
-
+                    // assigning values to each postion of the modal before opening it up
                     $('#idx').val(data);
                     $('#editName').val(res.name);
                     $('#editType').val(res.type);
@@ -88,13 +89,16 @@ $(document).ready(function () {
                     $('#editCont').val(res.content);
                     $('#editImg').val(res.img);
                     $('#editWaitModal').modal('show');
+
                 } else {
+
                     Swal.fire({
                         icon: "error",
                         title: "Oops...",
                         showCloseButton: true,
                         text: res.message,
                     });
+
                 }
             },
             error: function (xhr, status, error) {
@@ -102,7 +106,7 @@ $(document).ready(function () {
             },
         });
     });
-
+    // edit waitlist form
     $('#editWait').submit(function (event) {
         event.preventDefault();
         data = $(this).serialize();
@@ -139,9 +143,11 @@ $(document).ready(function () {
 
     });
 
+
+    // switch visibility of the waitlist
     $("#dataTable").on("click", ".switchBtn", function (event) {
         var data = $(this).data('id');
-        console.log("switch", data);
+        // console.log("switch", data);
         Swal.fire({
             title: 'Are you sure?',
             text: "You want to change the visibility of this waitlist?",
@@ -158,7 +164,7 @@ $(document).ready(function () {
                     data: { switchid: data },
                     dataType: "json",
                     success: function (res) {
-                        console.log("res", res);
+                        // console.log("res", res);
                         if (res.status == 200) {
                             $('#dataTable').DataTable().ajax.reload();
                             Swal.fire({
@@ -185,6 +191,7 @@ $(document).ready(function () {
 
     });
 
+    // send mail to those people
     $("#dataTable").on("click", ".mailBtn", function (event) {
         var productId = $(this).data('id');
 
@@ -199,8 +206,9 @@ $(document).ready(function () {
             confirmButtonColor: '#198754',
             confirmButtonText: 'Ship it!'
         }).then((result) => {
+            // if it is less than or equal to zero exit
             if (result.value <= 0) {
-                console.log("0");
+                // console.log("0");
                 Swal.fire({
                     icon: "info",
                     title: "Oops...",
@@ -210,6 +218,7 @@ $(document).ready(function () {
                 return;
             }
 
+            // else
             if (result.isConfirmed) {
                 Swal.fire({
                     imageUrl: "https://cdn.dribbble.com/users/1914549/screenshots/5361637/day22.gif",
@@ -232,7 +241,7 @@ $(document).ready(function () {
                                 count: result.value
                             },
                             success: function (res) {
-                                console.log(res);
+                                // console.log(res);
 
                                 // Close the Swal when the AJAX request is complete
                                 Swal.close();
@@ -266,11 +275,11 @@ $(document).ready(function () {
         });
     });
 
+    // datatable 2 populating
+    // methode 2
     $("#dataTable").on("click", "#view", function (event) {
         
         var id = $(this).data('id');
-
-        // Get the data from the server
         $.ajax({
             url: "php/down.php",
             type: "GET",
@@ -302,12 +311,16 @@ $(document).ready(function () {
 
     });
 
+    /* <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<buttons inside the main datatable */
+
+
 });
 
 
 
 $(document).ready(function () {
 
+   // login status return function 
     function loggedIn(callback) {
         $.ajax({
             type: "GET",
@@ -342,14 +355,15 @@ $(document).ready(function () {
         }
     });
 
-    // ------------------------- other functions -------------------------
+    // other functions >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
 
     loggedIn(function (isLoggedIn) {
     });
 
-    // -------------------------------------------------------------------
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
+    // logout 
     $('#logoutBtn').click(function (event) {
         event.preventDefault();
 
@@ -387,9 +401,11 @@ $(document).ready(function () {
         });
     });
 
+    // add new waitlist
     $('#newWait').submit(function (event) {
         event.preventDefault();
 
+        // just to make sure the subhead is under 250 letters
         if ($('#waitSub').val().length > 250) {
             Swal.fire({
                 icon: "error",
@@ -401,8 +417,6 @@ $(document).ready(function () {
         }
 
         //if waitDesc contains any single quotes or double show warning
-
-
         data = $(this).serialize();
         // console.log(data);
         $.ajax({
@@ -413,12 +427,14 @@ $(document).ready(function () {
             success: function (res) {
                 if (res.status == 200) {
                     $('#dataTable').DataTable().ajax.reload();
+
                     Swal.fire({
                         icon: "success",
                         title: "Success",
                         showCloseButton: true,
                         text: res.message,
                     })
+
                     $('#newWait')[0].reset();
                     $('#newWaitModal').modal('hide');
                 } else {

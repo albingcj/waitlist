@@ -7,8 +7,8 @@ $_SESSION = [];
 // Destroy the session
 session_destroy();
 
-// Output JSON response
-header('Content-Type: application/json');
+
+// header('Content-Type: application/json');
 echo json_encode([
     'status' => 200,
     'message' => 'Successfully logged out'

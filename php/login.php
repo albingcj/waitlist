@@ -2,6 +2,7 @@
 include_once('conn.php');
 session_start();
 
+// check if the user is an admin
 function checkAdmin($email, $password)
 {
     global $db;
@@ -22,7 +23,7 @@ function checkAdmin($email, $password)
 }
 
 
-
+// if it is an existing user
 function checkExist($email)
 {
     global $db;
@@ -40,7 +41,7 @@ function checkExist($email)
     }
 }
 
-
+// checking the password matches or not
 function validateCredentials($email, $password)
 {
     global $db;
@@ -69,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userEmail = $_POST['logEmail'];
     $userPwd = $_POST['logPass'];
 
-
+    // check if the user is an admin
     if (checkAdmin($userEmail, $userPwd)) {
         $res = [
             'status' => 207,

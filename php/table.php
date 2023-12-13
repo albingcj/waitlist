@@ -20,14 +20,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $query2 = "
     SELECT `count`,
     (SELECT COUNT(*) + 1 FROM $tableName AS t2 WHERE t2.`count` > t1.`count` AND t2.flag = 0) AS position
-FROM $tableName AS t1
-WHERE userid = $uid AND flag = 0;";
+    FROM $tableName AS t1
+    WHERE userid = $uid AND flag = 0;";
 
     $query_run2 = mysqli_query($db, $query2);
     $user = [];
     // var_dump($query2);
     if ($query_run2) {
-        // Fetch the result as an associative array
+        
         $result = mysqli_fetch_assoc($query_run2);
 
         if ($result) {

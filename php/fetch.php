@@ -81,6 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             echo json_encode(['data1' => $data, 'data2' => []]);
         }
     } else {
+        // fetching the content of the table
         $query = "SELECT * FROM accordion ";
         $query_run = mysqli_query($db, $query);
         $data = array();

@@ -2,7 +2,7 @@
 include_once("conn.php");
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['tableid'])) {
-
+        // fetch the data from the accordion table for each accordion content 
         $tableid = $_GET['tableid'];
         $query = "SELECT * FROM accordion WHERE id = '$tableid'";
         $result = mysqli_query($db, $query);
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         }
         echo json_encode($data);
     } else {
-
+        // fetch the data from the accordion table for all accordion content in latest ones
         $query = "SELECT * FROM accordion ORDER BY id DESC";
         $result = mysqli_query($db, $query);
         $data = array(); // Initialize $data array
@@ -53,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['waitName'])) {
+        //inserting a new waitlist into the platform
         $waitName = $_POST['waitName'];
         $waitProductId = $_POST['waitProductId'];
         $waitSub = $_POST['waitSub'];
@@ -138,6 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo json_encode($res);
         }
     } else if (isset($_POST['editName'])) {
+        //updating the accordion content
         $ename = $_POST['editName'];
         $etype = $_POST['editType'];
         $esub = $_POST['editSub'];
@@ -172,6 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo json_encode($res);
         return;
     } else if (isset($_POST['switchid'])) {
+        //switching the status of the accordion content
         $id = $_POST['switchid'];
         $query = "UPDATE accordion SET status = (1 - status) WHERE id = '$id'";
         $result = mysqli_query($db, $query);

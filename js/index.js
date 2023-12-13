@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     // Function to create content for the accordion button
     function createAccordionButtonContent(item, flagForButton) {
         var btnx;
@@ -57,7 +58,7 @@ $(document).ready(function () {
                 id: id
             },
             success: function (data) {
-                console.log(data.user);
+                // console.log(data.user);
                 createTable(data.topRecords, id);
                 createTable2(data.user, id);
             },
@@ -67,7 +68,8 @@ $(document).ready(function () {
         });
     }
 
-    // Function to create table body
+    // Functions to create table body
+    // top 5 people 
     function createTable(data, id) {
         var tableBody = $("#tableBody" + id);
         tableBody.empty();
@@ -99,6 +101,7 @@ $(document).ready(function () {
             });
         }
     }
+    // user position
     function createTable2(data, id) {
         var tableBody = $("#tableBody" + id);
         // tableBody.empty();
@@ -124,6 +127,8 @@ $(document).ready(function () {
 
         }
     }
+
+
     // Function to create the accordion body
     function createAccordionBody(item) {
         var accordionBody = $(
@@ -188,12 +193,16 @@ $(document).ready(function () {
 
         return accordionItem;
     }
+
+
     // Function to create accordion items dynamically
     function createAccordions(data1, container1, data2, container2) {
         // Clear existing accordion items in both containers
         container1.empty();
         container2.empty();
 
+
+        // sending a flag value too to check to which section to add
 
         $.each(data1, function (index, item) {
             var accordionItem = createAccordionItem(item, 1);
@@ -209,7 +218,7 @@ $(document).ready(function () {
         // Attach click event to dynamically added regBtn
 
         $(".regBtn").click(function (event) {
-            console.log("Register refreshed with id:", $(this).data("tableid"));
+            // console.log("Register refreshed with id:", $(this).data("tableid"));
 
             // Access the clicked button using event.target
             var clickedButton = $(event.target);
@@ -241,6 +250,7 @@ $(document).ready(function () {
             // $("#regModal").modal("show");
         });
     }
+
     // Function to fetch data from PHP script
     function fetchData() {
         $.ajax({
@@ -266,6 +276,7 @@ $(document).ready(function () {
     }
 
 
+    // if logged in get the details 
     function loggedIn(callback) {
         $.ajax({
             type: "GET",
@@ -280,12 +291,13 @@ $(document).ready(function () {
 
                     $("#lrBtns").addClass("d-none")
                     $("#loutBtn").removeClass("d-none")
+                    // getting first name only
                     var x = res.name.split(" ");
                     var y = x[0];
                     $('#waitname').val(y);
 
                     $("#regForm").attr("data-userid", res.userid);
-                    console.log(res.userid);
+                    // console.log(res.userid);
 
                     $("#perDet").html(
                         // `<p class="text-center">Welcome ${res.email}</p>` +
@@ -311,26 +323,24 @@ $(document).ready(function () {
 
 
     function urlCheck() {
-        // get url
+        // get url link
         var url = new URL(window.location.href);
 
         // check if "w" parameter is present in the URL
         if (url.searchParams.has("w")) {
             // "w" is present, get waitType
             var waitType = url.searchParams.get("w");
-
-            // set waitType
             $("#waitType").val(waitType);
 
+            
             // check if "r" parameter is present
             if (url.searchParams.has("r")) {
                 // "r" is present, get referal
                 var referal = url.searchParams.get("r");
-                // set referal
                 $("#referal").val(referal);
             }
 
-            // make AJAX request for waitType
+
             $.ajax({
                 type: "GET",
                 url: "php/regWaitlist.php",
@@ -338,7 +348,6 @@ $(document).ready(function () {
                 data: { waitType: waitType },
                 success: function (res) {
                     if (res.status == 200) {
-                        // set data-tableid if waitType is valid
                         $("#regForm").attr("data-tableid", res.tableid);
                     } else {
                         // handle invalid waitType
@@ -362,7 +371,6 @@ $(document).ready(function () {
                 // set referal
                 $("#referal").val(referal);
             } else {
-                // "w" is not present, handle accordingly
                 var currentUrl = window.location.href;
                 // find the index of "?"
                 var questionMarkIndex = currentUrl.indexOf("?");
@@ -382,6 +390,7 @@ $(document).ready(function () {
         }
     }
 
+    // if worng url is entered then clean it
     function handleInvalidWaitType() {
         // clean the URL
         var url = window.location.href;
@@ -393,7 +402,7 @@ $(document).ready(function () {
 
         // close modal
         $("#waitRegModal").modal("hide");
-        console.log("modal closed");
+        // console.log("modal closed");
 
         // show error message
         Swal.fire({
@@ -407,7 +416,7 @@ $(document).ready(function () {
 
 
 
-    /* ------------------------- autorun ----------------------------------------------*/
+    /* autorun >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>v*/
 
     // check url contains any parameters
     urlCheck();
@@ -418,11 +427,11 @@ $(document).ready(function () {
         // console.log(isLoggedIn);
     });
 
-    /* ---------------------------------------------------------------------------------*/
+    /* <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */
 
 
 
-    /* -------------------------------- other functions ---------------------------------------*/
+    /* other functions >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
     $("#copyLinkBtn").click(myFunction1);
     function myFunction1() {
         // Get the text field
@@ -437,7 +446,9 @@ $(document).ready(function () {
 
         Swal.fire({
             icon: "success",
-            title: "Copied"
+            title: "Copied",
+            timer:1000,
+            showConfirmButton:false
         });
     }
 
@@ -456,16 +467,18 @@ $(document).ready(function () {
 
         Swal.fire({
             icon: "success",
-            title: "Copied"
+            title: "Copied",
+            timer:1000,
+            showConfirmButton:false
         });
     }
 
 
-    /* ------------------------------end of other functions------------------------------------*/
+    /* <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<end of other functions*/
 
 
 
-    // -------------------------------other ajax requests---------------------------------
+    // other ajax requests >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     // login form
     $("#loginForm").submit(function (event) {
@@ -474,7 +487,7 @@ $(document).ready(function () {
         // Get the form data
         var formData = $(this).serialize();
 
-        // Submit the form using AJAX
+
         $.ajax({
             type: "POST",
             url: "php/login.php",
@@ -539,7 +552,7 @@ $(document).ready(function () {
         // Get the form data
         var formData = $(this).serialize();
 
-        // Submit the form using AJAX
+
         $.ajax({
             type: "POST",
             url: "php/register.php",
@@ -548,9 +561,9 @@ $(document).ready(function () {
             success: function (res) {
                 // console.log('Registration successful');
                 // res = JSON.parse(res);
-                console.log(res);
-                console.log(res.status);
-                console.log(res.message);
+                // console.log(res);
+                // console.log(res.status);
+                // console.log(res.message);
                 if (res.status == 200) {
                     Swal.fire({
                         icon: "success",
@@ -636,7 +649,7 @@ $(document).ready(function () {
                 var attributeName = attributes[i].name;
                 var attributeValue = attributes[i].value;
 
-                console.log("first consoling:", attributeName + ": " + attributeValue);
+                // console.log("first consoling:", attributeName + ": " + attributeValue);
 
                 // Check for specific attributes and assign values to variables
                 if (attributeName === "data-tableid") {
@@ -658,7 +671,7 @@ $(document).ready(function () {
         formData.append("waitType", waitType);
         formData.append("userid", userid);
 
-        console.log(formData);
+        // console.log(formData);
 
         $.ajax({
             type: "POST",
@@ -679,7 +692,7 @@ $(document).ready(function () {
 
                     addTable(tableid);
                     fetchData();
-                    console.log("Registration successful");
+                    // console.log("Registration successful");
                 } else {
                     Swal.fire({
                         icon: "error",
@@ -697,7 +710,8 @@ $(document).ready(function () {
 
     // Use a static parent container that exists on page load
     $("#joinedAccordionWait").on("click", ".shareBtn", function (event) {
-        console.log("Share button with id:", $(this).data("tableid"));
+
+        // console.log("Share button with id:", $(this).data("tableid"));
         var waitType = $(this).data("type");
         var uid;
 
