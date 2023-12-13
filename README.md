@@ -46,8 +46,9 @@ password : Admin@1
     - Each new waitlist created by the admin results in the creation of a specific table for it.
 
 5. **Database Schema:**
-```
     - **Accordion Table:**
+```
+
         - id (table id, primary key)
         - name (name of the product)
         - subhead (a short description of the product to show on accordion, less than 255 letters)
@@ -59,16 +60,17 @@ password : Admin@1
         - status (open or close status)
         
 ```
+    - **Admin Table:**
 ```
 
-    - **Admin Table:**
         - id
         - name
         - password
 
 ```
-```
     - **Table + (Product ID) Table:**
+```
+
         - id (primary key)
         - userid (joined user id)
         - name
@@ -78,16 +80,16 @@ password : Admin@1
 ```
 
 
+    - **Userlist Table:**
 ```
 
-    - **Userlist Table:**
         - id (user id)
         - joinedtables (comma-separated values of table ids which the user is joined)
 
 ```
+    - **Users Table:**
 ```
 
-    - **Users Table:**
         - id
         - name
         - email
