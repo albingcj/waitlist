@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $res = [
             'status' => 400,
-            'message' => "You have already joined this waitlist"
+            'message' => "You have already joined this waitlist or login"
         ];
         echo json_encode($res);
     }
