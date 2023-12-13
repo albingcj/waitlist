@@ -46,6 +46,7 @@ password : Admin@1
     - Each new waitlist created by the admin results in the creation of a specific table for it.
 
 5. **Database Schema:**
+```
     - **Accordion Table:**
         - id (table id, primary key)
         - name (name of the product)
@@ -56,12 +57,17 @@ password : Admin@1
         - total (joined count)
         - queue (currently last on the queue)
         - status (open or close status)
+        
+```
+```
 
     - **Admin Table:**
         - id
         - name
         - password
 
+```
+```
     - **Table + (Product ID) Table:**
         - id (primary key)
         - userid (joined user id)
@@ -69,9 +75,17 @@ password : Admin@1
         - count (referral points)
         - flag (to show if the mail is sent or not)
 
+```
+
+
+```
+
     - **Userlist Table:**
         - id (user id)
         - joinedtables (comma-separated values of table ids which the user is joined)
+
+```
+```
 
     - **Users Table:**
         - id
@@ -79,6 +93,7 @@ password : Admin@1
         - email
         - password
 
+```
 6. **Persistent User Login:**
     - Users only need to log in once; their information is stored for future registrations.
 
