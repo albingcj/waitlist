@@ -133,10 +133,10 @@ $(document).ready(function () {
         Swal.fire({
             title: 'Are you sure?',
             text: "You want to change the visibility of this waitlist?",
-            icon: 'warning',
+            icon: 'question',
             showCancelButton: true,
             cancelButtonColor: '#3085d6',
-            confirmButtonColor: '#d33',
+            confirmButtonColor: '#198754',
             confirmButtonText: 'Yes, change it!'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -184,7 +184,7 @@ $(document).ready(function () {
             },
             showCancelButton: true,
             cancelButtonColor: '#3085d6',
-            confirmButtonColor: '#d33',
+            confirmButtonColor: '#198754',
             confirmButtonText: 'Ship it!'
         }).then((result) => {
             if (result.value <= 0) {
