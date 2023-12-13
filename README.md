@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a waitlist management platform developed using the PHP stack and MySQL. The platform allows users to view and interact with waitlists, join them, and receive alerts when their products are available for them. It also incorporates a referral system, user points, and an admin panel for managing products and waitlists.
+This project is a waitlist management platform developed using the PHP stack and MySQL. The platform allows users to view and interact with waitlists, join them, and receive alerts when their products are available for them. It also incorporates a referral system, user points, and an admin panel for managing products and waitlists. Using DataTables for providing better controls for the Admin for viewing data.
 
 ## Installation
 
@@ -48,6 +48,7 @@ password : Admin@1
    - Admin can add, modify, and change the visibility of waitlists.
    - Admin can set the number of products to be shipped.
    - Each new waitlist created by the admin results in the creation of a specific table for it.
+   - Admin can view the entire waitlist of people irrespective of sending the link mail
 
 5. **Database Schema:**
 
@@ -115,6 +116,7 @@ password : Admin@1
    - MySQL
    - SweetAlert2
    - phpmailer
+   - DataTables
 
 ## Developer
 
