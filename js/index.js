@@ -1,5 +1,9 @@
 $(document).ready(function () {
 
+
+    $("#loader").removeClass(" d-none");
+
+
     // Function to create content for the accordion button
     function createAccordionButtonContent(item, flagForButton) {
         var btnx;
@@ -268,6 +272,8 @@ $(document).ready(function () {
                 } else {
                     console.error("Invalid response format");
                 }
+                $("#loader").addClass(" d-none")
+
             },
             error: function (xhr, status, error) {
                 console.error("Error fetching accordion data:", error);
@@ -332,7 +338,7 @@ $(document).ready(function () {
             var waitType = url.searchParams.get("w");
             $("#waitType").val(waitType);
 
-            
+
             // check if "r" parameter is present
             if (url.searchParams.has("r")) {
                 // "r" is present, get referal
@@ -447,8 +453,8 @@ $(document).ready(function () {
         Swal.fire({
             icon: "success",
             title: "Copied",
-            timer:1000,
-            showConfirmButton:false
+            timer: 1000,
+            showConfirmButton: false
         });
     }
 
@@ -468,8 +474,8 @@ $(document).ready(function () {
         Swal.fire({
             icon: "success",
             title: "Copied",
-            timer:1000,
-            showConfirmButton:false
+            timer: 1000,
+            showConfirmButton: false
         });
     }
 
@@ -482,6 +488,7 @@ $(document).ready(function () {
 
     // login form
     $("#loginForm").submit(function (event) {
+        $("#loader").removeClass;
         event.preventDefault();
 
         // Get the form data
@@ -508,6 +515,7 @@ $(document).ready(function () {
                     loggedIn(function (isLoggedIn) {
                         // console.log(isLoggedIn);
                     });
+                    $("#loader").addClass(" d-none")
                 } else if (res.status == 207) {
                     Swal.fire({
                         icon: "success",
@@ -525,9 +533,11 @@ $(document).ready(function () {
                         text: res.message,
                     });
                 }
+                $("#loader").addClass(" d-none")
             },
             error: function (xhr, status, error) {
                 console.error("Error logging in:", error);
+                $("#loader").addClass(" d-none")
             },
         });
     });
@@ -575,12 +585,15 @@ $(document).ready(function () {
                     $("#registerModal").modal("hide");
 
                 } else {
+                    handleInvalidWaitType()
                     Swal.fire({
                         icon: "error",
                         title: "Oops...",
                         showCloseButton: true,
                         text: res.message,
                     });
+                    $("#regForm")[0].reset();
+                    $("#waitRegModal").modal("hide");
                 }
             },
             error: function (xhr, status, error) {
@@ -591,6 +604,7 @@ $(document).ready(function () {
 
     // logout
     $('#logoutBtn').click(function (event) {
+        $("#loader").removeClass;
         event.preventDefault();
 
         $.ajax({
@@ -621,9 +635,11 @@ $(document).ready(function () {
                         text: res.message,
                     });
                 }
+                $("#loader").addClass(" d-none")
             },
             error: function (xhr, status, error) {
                 console.error("Error logging out:", error);
+                $("#loader").addClass(" d-none")
             },
         });
     });
@@ -710,7 +726,7 @@ $(document).ready(function () {
 
     // Use a static parent container that exists on page load
     $("#joinedAccordionWait").on("click", ".shareBtn", function (event) {
-
+        $("#loader").removeClass;
         // console.log("Share button with id:", $(this).data("tableid"));
         var waitType = $(this).data("type");
         var uid;
@@ -741,6 +757,7 @@ $(document).ready(function () {
                         text: "Please login to share!",
                     });
                 }
+                $("#loader").addClass(" d-none")
             }
         });
     });

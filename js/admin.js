@@ -20,11 +20,9 @@ $(document).ready(function () {
             {
                 data: null,
                 render: function (data, type, row) {
-
                     if (row.status == 1) {
-
                         return (
-                            '<div class="d-flex"><button class="btn btn-primary btn-sm  text-light editBtn mx-1" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Edit waitlist" data-id="' +
+                            '<div class="d-flex"><button class="btn btn-primary btn-sm text-light editBtn mx-1" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Edit waitlist" data-id="' +
                             row.id +
                             '"><i class="fa-solid fa-file-pen"></i></button> <button class="btn btn-success btn-sm switchBtn mx-1" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Change visibility" data-id="' +
                             row.id +
@@ -33,11 +31,10 @@ $(document).ready(function () {
                             '"> <i class="fa-solid fa-envelope-circle-check"></i></i></button><button id="view" class="btn btn-primary" data-id="' +
                             row.id +
                             '"><i class="fa-solid fa-clipboard-list"></i></button></div>'
-
                         );
                     } else {
                         return (
-                            '<div class="d-flex"><button class="btn btn-primary btn-sm  text-light editBtn mx-1" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Edit waitlist" data-id="' +
+                            '<div class="d-flex"><button class="btn btn-primary btn-sm text-light editBtn mx-1" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Edit waitlist" data-id="' +
                             row.id +
                             '"><i class="fa-solid fa-file-pen"></i></button> <button class="btn btn-danger btn-sm switchBtn mx-1" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Change visibility" data-id="' +
                             row.id +
@@ -46,13 +43,17 @@ $(document).ready(function () {
                             '"> <i class="fa-solid fa-envelope-circle-check"></i></i></button><button id="view" class="btn btn-primary" data-id="' +
                             row.id +
                             '"><i class="fa-solid fa-clipboard-list"></i></button></div>'
-
                         );
                     }
                 },
             },
         ],
+        initComplete: function () {
+            // Hide the loader when DataTable is fully initialized
+            $("#loader").addClass("d-none");
+        },
     });
+
 
     // specific modal content table declaration
     var dataTable2 = $("#dataTable2").DataTable();
@@ -278,7 +279,7 @@ $(document).ready(function () {
     // datatable 2 populating
     // methode 2
     $("#dataTable").on("click", "#view", function (event) {
-        
+
         var id = $(this).data('id');
         $.ajax({
             url: "php/down.php",
@@ -292,7 +293,7 @@ $(document).ready(function () {
                 // Loop through the array and add the data to the table
                 for (var i = 0; i < data.length; i++) {
                     dataTable2.row.add([
-                        i+1,
+                        i + 1,
                         data[i].name,
                         data[i].referal,
                         data[i].status,
@@ -301,7 +302,7 @@ $(document).ready(function () {
 
                 // Redraw the table
                 dataTable2.draw();
-            },error: function (xhr, status, error) {
+            }, error: function (xhr, status, error) {
                 console.error("Error during AJAX request:", error);
             },
 
@@ -320,7 +321,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
 
-   // login status return function 
+    // login status return function 
     function loggedIn(callback) {
         $.ajax({
             type: "GET",
