@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
                 $mail->Username = 'dummygcj@gmail.com';  // Your Gmail address
-                $mail->Password = 'cnnj ceth jwfq ixfg';   // Your Gmail password
+                $mail->Password = 'cnnj ceth jwfq ixfg';   // Your Generated App password
                 $mail->SMTPSecure = 'tls';
                 $mail->Port = 587;
 
