@@ -384,7 +384,7 @@ $(document).ready(function () {
                         showCloseButton: true,
                         text: res.message,
                     }).then(function () {
-                        window.location.href = "index.html";
+                        window.location.replace("index.html");
                     });
 
                 } else {

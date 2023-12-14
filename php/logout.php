@@ -5,12 +5,16 @@ session_start();
 $_SESSION = [];
 
 // Destroy the session
-session_destroy();
-
-
-// header('Content-Type: application/json');
-echo json_encode([
-    'status' => 200,
-    'message' => 'Successfully logged out'
-]);
-
+if (session_destroy()) {
+    echo json_encode([
+        'status' => 200,
+        'message' => 'Successfully logged out'
+    ]);
+    return;
+} else {
+    echo json_encode([
+        'status' => 500,
+        'message' => 'Something went wrong'
+    ]);
+    return;
+}

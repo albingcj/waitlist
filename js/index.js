@@ -626,6 +626,7 @@ $(document).ready(function () {
                         showCloseButton: true,
                         text: res.message,
                     });
+                    window.location.replace("index.html");
 
                 } else {
                     Swal.fire({
