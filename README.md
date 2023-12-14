@@ -7,7 +7,7 @@ This project is a waitlist management platform developed using the PHP stack and
 ## Installation
 
 1. Clone the repository: `git clone https://github.com/albingcj/waitlist.git`
-2. Create a database with name waitlist and then, import the database schema into MySQL.
+2. Create a database with name waitlist and then, import the ` waitlist.sql ` database schema into MySQL.
 3. Customize any other configuration files as needed.
 
 ## Usage
